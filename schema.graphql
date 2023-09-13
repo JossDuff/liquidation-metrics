@@ -1,0 +1,11 @@
+type Liquidator @entity {
+  id: ID!
+  address: String!
+  totalSeized: BigInt!
+}
+
+type LiquidatedAccount @entity {
+  id: ID!
+  address: String!
+  totalSeized: BigInt!
+}
