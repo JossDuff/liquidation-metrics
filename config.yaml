@@ -3,7 +3,7 @@ description: My Awesome Contract # Description of the project
 networks: # Configuration of the blockchain networks that the project is deployed on
   - id: 1 # Chain identifier of the network (ethereum mainnet)
     rpc_config:
-      url: http://localhost:8545 # RPC URL that will be used to subscribe to blockchain data on this network
+      url: #http://localhost:8545 # RPC URL that will be used to subscribe to blockchain data on this network
     start_block: 0 # Initial block from which the indexer will start listening for events
     contracts: # Configuration for each contract
       - name: CDAI # User-defined contract name
@@ -14,4 +14,3 @@ networks: # Configuration of the blockchain networks that the project is deploye
           - event: LiquidateBorrow #  Name of the event (must match the name in the ABI)
             requiredEntities: # An array of entities that need to loaded and made accessible within the handler function (an empty array indicates that no entities are required)
               - name: Liquidator # The name of the required entity (must match an entity defined in `schema.graphql`)
-              - name: LiquidatedAccount

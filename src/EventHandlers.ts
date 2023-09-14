@@ -3,33 +3,37 @@
 */
 
 import {
-  MyAwesomeContractContract_AwesomeEvent_loader,
-  MyAwesomeContractContract_AwesomeEvent_handler,
+  CDAIContract_LiquidateBorrow_loader,
+  CDAIContract_LiquidateBorrow_handler,
 } from "../generated/src/Handlers.gen";
 
 
-import { awesomeEntityEntity } from "../generated/src/Types.gen";
+import { liquidatorEntity } from "../generated/src/Types.gen";
+import { CDAI } from "./src/Converters.bs";
 
-MyAwesomeContractContract_AwesomeEvent_loader(({ event, context }) => {
-  context.awesomeEntity.load(event.params.identifier)
+// MyAwesomeContractContract_AwesomeEvent_loader(({ event, context }) => {
+//   context.awesomeEntity.load(event.params.identifier)
+// });
+
+CDAIContract_LiquidateBorrow_loader(({ event, context }) => {
+  // load the required liquidator entity
+  context.liquidator.load(event.params.liquidator.toString());
 });
 
-MyAwesomeContractContract_AwesomeEvent_handler(({ event, context }) => {
-  let awesomeEventObject = context.awesomeEntity.get(event.params.identifier);
-  if (!!awesomeEventObject) {
-    const updatedEntity = {
-      id: awesomeEventObject.id,
-      awesomeAddress: event.params.awesomeAddress,
-      awesomeTotal: event.params.awesomeValue + awesomeEventObject.awesomeTotal
+CDAIContract_LiquidateBorrow_handler(({ event, context }) => {
+
+  let liquidator = context.liquidator.get(event.params.liquidator.toString());
+
+  if (!!liquidator) {
+    const updatedLiquidator = {
+      id: liquidator.id,
     }
-    context.awesomeEntity.set(updatedEntity);
+    context.liquidator.set(updatedLiquidator);
   } else {
-    const awesomeEntityObject = {
-      id: event.params.identifier,
-      awesomeAddress: event.params.awesomeAddress,
-      awesomeTotal: event.params.awesomeValue
+    const liquidatorObject = {
+      id: event.params.liquidator.toString(),
     }
-    context.awesomeEntity.set(awesomeEntityObject);
+    context.liquidator.set(liquidatorObject);
   }
 });
 
