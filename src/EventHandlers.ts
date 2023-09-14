@@ -9,12 +9,10 @@ import {
 
 
 import {
-  liquidatorEntity,
-  liquidateeEntity,
+  liquidatorAccountEntity,
+  liquidatedAccountEntity,
   tokenWonEntity,
   tokenLostEntity,
-  tokenWonLoaderConfig,
-  tokenLostLoaderConfig
 } from "../generated/src/Types.gen";
 import { CDAI } from "./src/Converters.bs";
 
@@ -24,68 +22,100 @@ import { CDAI } from "./src/Converters.bs";
 
 CDAIContract_LiquidateBorrow_loader(({ event, context }) => {
   let liquidatorAddress: string = event.params.liquidator.toString();
-  let liquidateeAddress: string = event.params.borrower.toString();
+  let liquidatedAddress: string = event.params.borrower.toString();
   let ctokenAddress: string = event.params.cTokenCollateral.toString();
   let tokenWonID: string = liquidatorAddress.concat(ctokenAddress);
-  let tokenLostID: string = liquidateeAddress.concat(ctokenAddress);
+  let tokenLostID: string = liquidatedAddress.concat(ctokenAddress);
 
-  context.liquidator.load(liquidatorAddress);
-  context.liquidatee.load(liquidateeAddress);
-  context.tokenWon.load(tokenWonID, { loaders: { loadLiquidator: true } });
-  context.tokenLost.load(tokenLostID, { loaders: { loadLiquidatee: true } });
+  context.liquidatorAccount.load(liquidatorAddress);
+  context.liquidatedAccount.load(liquidatedAddress);
+  context.tokenWon.load(tokenWonID, { loaders: { loadLiquidatorAccount: true } });
+  context.tokenLost.load(tokenLostID, { loaders: { loadLiquidatedAccount: true } });
 });
 
 CDAIContract_LiquidateBorrow_handler(({ event, context }) => {
   let liquidatorAddress: string = event.params.liquidator.toString();
-  let liquidateeAddress: string = event.params.borrower.toString();
+  let liquidatedAddress: string = event.params.borrower.toString();
+
+  context.log.debug(`processing liquidator ${liquidatorAddress}`);
+  // update/create liquidator
+  let liquidatorAccount = context.liquidatorAccount.get(liquidatorAddress);
+  if (!!liquidatorAccount) {
+    const updatedLiquidatorAccount: liquidatorAccountEntity = {
+      id: liquidatorAccount.id,
+      numberLiquidations: liquidatorAccount.numberLiquidations + 1
+    }
+    context.liquidatorAccount.set(updatedLiquidatorAccount);
+  } else {
+    const liquidatorAccountObject: liquidatorAccountEntity = {
+      id: liquidatorAddress,
+      numberLiquidations: 1
+    }
+    context.liquidatorAccount.set(liquidatorAccountObject);
+  }
+
+  context.log.debug(`processing liquidated ${liquidatedAddress}`);
+  // update/create liquidatedAccount
+  let liquidatedAccount = context.liquidatedAccount.get(liquidatedAddress);
+  if (!!liquidatedAccount) {
+    const updatedLiquidatedAccount: liquidatedAccountEntity = {
+      id: liquidatedAccount.id,
+      numberLiquidations: liquidatedAccount.numberLiquidations + 1
+    }
+    context.liquidatedAccount.set(updatedLiquidatedAccount);
+  } else {
+    const liquidatedAccountObject: liquidatedAccountEntity = {
+      id: liquidatedAddress,
+      numberLiquidations: 1
+    }
+    context.liquidatedAccount.set(liquidatedAccountObject);
+  }
+
+
   let ctokenAddress: string = event.params.cTokenCollateral.toString();
   let tokenWonID: string = liquidatorAddress.concat(ctokenAddress);
-  let tokenLostID: string = liquidateeAddress.concat(ctokenAddress);
-
-  // update/create liquidator
-  let liquidator = context.liquidator.get(liquidatorAddress);
-  if (!!liquidator) {
-    const updatedLiquidator = {
-      id: liquidator.id,
-      numberLiquidations: liquidator.numberLiquidations + 1
-    }
-    context.liquidator.set(updatedLiquidator);
-  } else {
-    const liquidatorObject = {
-      id: event.params.liquidator.toString(),
-      numberLiquidations: 1
-    }
-    context.liquidator.set(liquidatorObject);
-  }
-
-  // update/create liquidatee
-  let liquidatee = context.liquidatee.get(liquidateeAddress);
-  if (!!liquidatee) {
-    const updatedLiquidatee = {
-      id: liquidatee.id,
-      numberLiquidations: liquidatee.numberLiquidations + 1
-    }
-    context.liquidatee.set(updatedLiquidatee);
-  } else {
-    const liquidateeObject = {
-      id: event.params.borrower.toString(),
-      numberLiquidations: 1
-    }
-    context.liquidatee.set(liquidateeObject);
-  }
+  let tokenLostID: string = liquidatedAddress.concat(ctokenAddress);
 
   // update/create TokenWon
   let tokenWon = context.tokenWon.get(tokenWonID);
   if (!!tokenWon) {
-    const updatedTokenWon = {
+    const updatedTokenWon: tokenWonEntity = {
       id: tokenWon.id,
-      ctoken: event.params.cTokenCollateral,
-      liquidator: tokenWon.liquidator,
+      ctoken: tokenWon.ctoken,
+      liquidatorAccount: tokenWon.liquidatorAccount,
       amountWon: tokenWon.amountWon + event.params.seizeTokens
     }
     context.tokenWon.set(updatedTokenWon)
   }
-  else { // TODO}
-    // is this slow?  Could I just set this to liquidatorAddress instead?
-  });
+  else {
+    const tokenWonObject: tokenWonEntity = {
+      id: tokenWonID,
+      ctoken: ctokenAddress,
+      liquidatorAccount: liquidatorAddress,
+      amountWon: event.params.seizeTokens
+    }
+    context.tokenWon.set(tokenWonObject)
+  }
+
+  // update/create TokenLost
+  let tokenLost = context.tokenLost.get(tokenLostID);
+  if (!!tokenLost) {
+    const updatedTokenLost: tokenLostEntity = {
+      id: tokenLost.id,
+      ctoken: tokenLost.ctoken,
+      liquidatedAccount: tokenLost.liquidatedAccount,
+      amountLost: tokenLost.amountLost + event.params.seizeTokens
+    }
+    context.tokenLost.set(updatedTokenLost)
+  }
+  else {
+    const tokenLostObject: tokenLostEntity = {
+      id: tokenLostID,
+      ctoken: ctokenAddress,
+      liquidatedAccount: liquidatedAddress,
+      amountLost: event.params.seizeTokens
+    }
+    context.tokenLost.set(tokenLostObject)
+  }
+});
 

@@ -1,5 +1,5 @@
 name: liquidation-metrics # Name of the project
-description: My Awesome Contract # Description of the project
+description: Liquidation data for Compound-V2 # Description of the project
 networks: # Configuration of the blockchain networks that the project is deployed on
   - id: 1 # Chain identifier of the network (ethereum mainnet)
     rpc_config:
@@ -13,7 +13,7 @@ networks: # Configuration of the blockchain networks that the project is deploye
         events: # Configuration for each event emitted by this contract that the indexer will listen for
           - event: LiquidateBorrow #  Name of the event (must match the name in the ABI)
             requiredEntities: # An array of entities that need to loaded and made accessible within the handler function (an empty array indicates that no entities are required)
-              - name: Liquidator # The name of the required entity (must match an entity defined in `schema.graphql`)
-              - name: Liquidatee
+              - name: LiquidatorAccount # The name of the required entity (must match an entity defined in `schema.graphql`)
+              - name: LiquidatedAccount
               - name: TokenWon
               - name: TokenLost
