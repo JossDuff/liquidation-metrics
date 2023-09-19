@@ -41,3 +41,8 @@ type Tokenlost @entity {
   # amount lost (seized) of cTokenCollateral by this account
   amountLost: BigInt!
 }
+
+type Ctoken @entity {
+  # ctoken address
+  id: ID!
+}

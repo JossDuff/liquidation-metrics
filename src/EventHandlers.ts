@@ -3,8 +3,10 @@
  */
 
 import {
-  CDAIContract_LiquidateBorrow_loader,
-  CDAIContract_LiquidateBorrow_handler,
+  CTokenContract_LiquidateBorrow_loader,
+  CTokenContract_LiquidateBorrow_handler,
+  ComptrollerContract_MarketListed_loader,
+  ComptrollerContract_MarketListed_handler,
 } from "../generated/src/Handlers.gen";
 
 import {
@@ -12,14 +14,35 @@ import {
   liquidatedaccountEntity,
   tokenwonEntity,
   tokenlostEntity,
+  ctokenEntity,
 } from "../generated/src/Types.gen";
-import { CDAI } from "./src/Converters.bs";
+import { CToken } from "./src/Converters.bs"; // Am I even using this?
 
 // MyAwesomeContractContract_AwesomeEvent_loader(({ event, context }) => {
 //   context.awesomeEntity.load(event.params.identifier)
 // });
 
-CDAIContract_LiquidateBorrow_loader(({ event, context }) => {
+ComptrollerContract_MarketListed_loader(({ event, context }) => {
+  let ctoken = event.params.cToken;
+
+  context.contractRegistration.addCToken(ctoken);
+  // console.log(`registered ctoken: ${ctoken}`);
+  context.ctoken.load(ctoken.toString());
+});
+
+ComptrollerContract_MarketListed_handler(({ event, context }) => {
+  let ctokenAddress = event.params.cToken.toString();
+
+  let ctoken = context.ctoken.get(ctokenAddress);
+  if (!ctoken) {
+    const ctokenObject: ctokenEntity = {
+      id: ctokenAddress,
+    }
+    context.ctoken.set(ctokenObject);
+  }
+});
+
+CTokenContract_LiquidateBorrow_loader(({ event, context }) => {
   let liquidatorAddress: string = event.params.liquidator.toString();
   let liquidatedAddress: string = event.params.borrower.toString();
   let ctokenAddress: string = event.params.cTokenCollateral.toString();
@@ -35,7 +58,7 @@ CDAIContract_LiquidateBorrow_loader(({ event, context }) => {
   });
 });
 
-CDAIContract_LiquidateBorrow_handler(({ event, context }) => {
+CTokenContract_LiquidateBorrow_handler(({ event, context }) => {
   let liquidatorAddress: string = event.params.liquidator.toString();
   let liquidatedAddress: string = event.params.borrower.toString();
   // context.log.debug(`processing liquidator ${liquidatorAddress}`);
