@@ -7,7 +7,7 @@ type Liquidatoraccount @entity {
   # number of liquidations
   numberLiquidations: Int!
   # list of ctokens and amounts won (seized from Liquidatedaccount)
-  tokensWon: [Tokenwon!]! @derivedFrom(field: "liquidatorAccountX")
+  tokensWon: [Tokenwon!]! @derivedFrom(field: "liquidatorAccountWon")
 }
 
 # accounts that have been liquidated
@@ -17,7 +17,7 @@ type Liquidatedaccount @entity {
   # number of liquidations
   numberLiquidations: Int!
   # list of ctokens and amounts lost (seized by Liquidatoraccount)
-  tokensLost: [Tokenlost!]! @derivedFrom(field: "liquidatedAccountX")
+  tokensLost: [Tokenlost!]! @derivedFrom(field: "liquidatedAccountLost")
 }
 
 type Tokenwon @entity {
@@ -26,7 +26,7 @@ type Tokenwon @entity {
   # address of ctoken
   ctoken: String!
   # liquidator
-  liquidatorAccountX: Liquidatoraccount!
+  liquidatorAccountWon: Liquidatoraccount!
   # amount won (seized) of cTokenCollateral by this Liquidatoraccount
   amountWon: BigInt!
 }
@@ -37,7 +37,7 @@ type Tokenlost @entity {
   # address of ctoken
   ctoken: String!
   # Liquidatedaccount
-  liquidatedAccountX: Liquidatedaccount!
+  liquidatedAccountLost: Liquidatedaccount!
   # amount lost (seized) of cTokenCollateral by this account
   amountLost: BigInt!
 }
