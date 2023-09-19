@@ -1,44 +1,43 @@
 # LiquidateBorrow(address liquidator, address borrower, uint repayAmount, address cTokenCollateral, uint seizeTokens)
 
 # Liquidator bots
-type LiquidatorAccount @entity {
+type Liquidatoraccount @entity {
   # address liquidator
   id: ID!
   # number of liquidations
   numberLiquidations: Int!
-  # list of ctokens and amounts won (seized from liquidatedAccount)
-  tokensWon: [TokenWon!]! @derivedFrom(field: "liquidatorAccount")
+  # list of ctokens and amounts won (seized from Liquidatedaccount)
+  tokensWon: [Tokenwon!]! @derivedFrom(field: "liquidatorAccountX")
 }
 
 # accounts that have been liquidated
-type LiquidatedAccount @entity {
+type Liquidatedaccount @entity {
   # address borrower
   id: ID!
   # number of liquidations
   numberLiquidations: Int!
-  # list of ctokens and amounts lost (seized by liquidatoraccount)
-  tokensLost: [TokenLost!]! @derivedFrom(field: "liquidatedAccount")
+  # list of ctokens and amounts lost (seized by Liquidatoraccount)
+  tokensLost: [Tokenlost!]! @derivedFrom(field: "liquidatedAccountX")
 }
 
-
-type TokenWon @entity {
-  # concat of address liquidatoraccount and address cTokenCollateral
+type Tokenwon @entity {
+  # concat of address Liquidatoraccount and address cTokenCollateral
   id: ID!
   # address of ctoken
   ctoken: String!
   # liquidator
-  liquidatorAccount: LiquidatorAccount!
-  # amount won (seized) of cTokenCollateral by this liquidatoraccount
+  liquidatorAccountX: Liquidatoraccount!
+  # amount won (seized) of cTokenCollateral by this Liquidatoraccount
   amountWon: BigInt!
 }
 
-type TokenLost @entity {
+type Tokenlost @entity {
   # concat of address borrower and address cTokenCollateral
   id: ID!
   # address of ctoken
   ctoken: String!
-  # liquidatedAccount
-  liquidatedAccount: LiquidatedAccount!
+  # Liquidatedaccount
+  liquidatedAccountX: Liquidatedaccount!
   # amount lost (seized) of cTokenCollateral by this account
   amountLost: BigInt!
 }
