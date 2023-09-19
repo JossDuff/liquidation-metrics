@@ -45,4 +45,6 @@ type Tokenlost @entity {
 type Ctoken @entity {
   # ctoken address
   id: ID!
+  # number of liquidations this ctoken was involved in
+  numberLiquidations: Int!
 }

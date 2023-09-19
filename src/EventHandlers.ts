@@ -23,31 +23,33 @@ import { CToken } from "./src/Converters.bs"; // Am I even using this?
 // });
 
 ComptrollerContract_MarketListed_loader(({ event, context }) => {
-  let ctoken = event.params.cToken;
+  const ctoken = event.params.cToken;
 
   context.contractRegistration.addCToken(ctoken);
   // console.log(`registered ctoken: ${ctoken}`);
-  context.ctoken.load(ctoken.toString());
+  context.ctoken.load(ctoken);
 });
 
 ComptrollerContract_MarketListed_handler(({ event, context }) => {
-  let ctokenAddress = event.params.cToken.toString();
+  const ctokenAddress = event.params.cToken;
 
   let ctoken = context.ctoken.get(ctokenAddress);
   if (!ctoken) {
     const ctokenObject: ctokenEntity = {
       id: ctokenAddress,
+      numberLiquidations: 0,
     }
     context.ctoken.set(ctokenObject);
   }
 });
 
 CTokenContract_LiquidateBorrow_loader(({ event, context }) => {
-  let liquidatorAddress: string = event.params.liquidator.toString();
-  let liquidatedAddress: string = event.params.borrower.toString();
-  let ctokenAddress: string = event.params.cTokenCollateral.toString();
-  let tokenwonID: string = liquidatorAddress.concat(ctokenAddress);
-  let tokenlostID: string = liquidatedAddress.concat(ctokenAddress);
+  const liquidatorAddress: string = event.params.liquidator;
+  const liquidatedAddress: string = event.params.borrower;
+  const ctokenAddress: string = event.params.cTokenCollateral;
+  const tokenwonID: string = liquidatorAddress.concat(ctokenAddress);
+  const tokenlostID: string = liquidatedAddress.concat(ctokenAddress);
+  context.ctoken.load(ctokenAddress);
   context.liquidatoraccount.load(liquidatorAddress);
   context.liquidatedaccount.load(liquidatedAddress);
   context.tokenwon.load(tokenwonID, {
@@ -59,11 +61,11 @@ CTokenContract_LiquidateBorrow_loader(({ event, context }) => {
 });
 
 CTokenContract_LiquidateBorrow_handler(({ event, context }) => {
-  let liquidatorAddress: string = event.params.liquidator.toString();
-  let liquidatedAddress: string = event.params.borrower.toString();
+  const liquidatorAddress: string = event.params.liquidator;
+  const liquidatedAddress: string = event.params.borrower;
   // context.log.debug(`processing liquidator ${liquidatorAddress}`);
   // update/create liquidator
-  let liquidatorAccount = context.liquidatoraccount.get(liquidatorAddress);
+  const liquidatorAccount = context.liquidatoraccount.get(liquidatorAddress);
   if (!!liquidatorAccount) {
     const updatedLiquidatorAccount: liquidatoraccountEntity = {
       id: liquidatorAccount.id,
@@ -79,7 +81,7 @@ CTokenContract_LiquidateBorrow_handler(({ event, context }) => {
   }
   // context.log.debug(`processing liquidated ${liquidatedAddress}`);
   // update/create liquidatedAccount
-  let liquidatedAccount = context.liquidatedaccount.get(liquidatedAddress);
+  const liquidatedAccount = context.liquidatedaccount.get(liquidatedAddress);
   if (!!liquidatedAccount) {
     const updatedLiquidatedAccount: liquidatedaccountEntity = {
       id: liquidatedAccount.id,
@@ -93,11 +95,24 @@ CTokenContract_LiquidateBorrow_handler(({ event, context }) => {
     };
     context.liquidatedaccount.set(liquidatedAccountObject);
   }
-  let ctokenAddress: string = event.params.cTokenCollateral.toString();
-  let tokenwonID: string = liquidatorAddress.concat(ctokenAddress);
-  let tokenlostID: string = liquidatedAddress.concat(ctokenAddress);
+
+  const ctokenAddress: string = event.params.cTokenCollateral;
+  // update the number of liquidations this ctoken was involved in
+  const ctoken = context.ctoken.get(ctokenAddress);
+  if (ctoken === undefined) {
+    context.log.error(`ctoken ${ctokenAddress} is undefined`);
+  } else {
+    let updatedctoken: ctokenEntity = {
+      id: ctoken?.id,
+      numberLiquidations: ctoken?.numberLiquidations + 1
+    }
+    context.ctoken.set(updatedctoken);
+  }
+
+  const tokenwonID: string = liquidatorAddress.concat(ctokenAddress);
+  const tokenlostID: string = liquidatedAddress.concat(ctokenAddress);
   // update/create tokenwon
-  let tokenwon = context.tokenwon.get(tokenwonID);
+  const tokenwon = context.tokenwon.get(tokenwonID);
   if (!!tokenwon) {
     const updatedtokenwon: tokenwonEntity = {
       id: tokenwon.id,
@@ -116,7 +131,7 @@ CTokenContract_LiquidateBorrow_handler(({ event, context }) => {
     context.tokenwon.set(tokenwonObject);
   }
   // update/create tokenlost
-  let tokenlost = context.tokenlost.get(tokenlostID);
+  const tokenlost = context.tokenlost.get(tokenlostID);
   if (!!tokenlost) {
     const updatedtokenlost: tokenlostEntity = {
       id: tokenlost.id,
