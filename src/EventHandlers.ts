@@ -3,8 +3,8 @@
  */
 
 import {
-  CTokenContract_LiquidateBorrow_loader,
-  CTokenContract_LiquidateBorrow_handler,
+  CtokenContract_LiquidateBorrow_loader,
+  CtokenContract_LiquidateBorrow_handler,
   ComptrollerContract_MarketListed_loader,
   ComptrollerContract_MarketListed_handler,
 } from "../generated/src/Handlers.gen";
@@ -16,7 +16,7 @@ import {
   tokenlostEntity,
   ctokenEntity,
 } from "../generated/src/Types.gen";
-import { CToken } from "./src/Converters.bs"; // Am I even using this?
+import { Ctoken } from "./src/Converters.bs"; // Am I even using this?
 
 // MyAwesomeContractContract_AwesomeEvent_loader(({ event, context }) => {
 //   context.awesomeEntity.load(event.params.identifier)
@@ -25,7 +25,7 @@ import { CToken } from "./src/Converters.bs"; // Am I even using this?
 ComptrollerContract_MarketListed_loader(({ event, context }) => {
   const ctoken = event.params.cToken;
 
-  context.contractRegistration.addCToken(ctoken);
+  context.contractRegistration.addCtoken(ctoken);
   // console.log(`registered ctoken: ${ctoken}`);
   context.ctoken.load(ctoken);
 });
@@ -43,7 +43,7 @@ ComptrollerContract_MarketListed_handler(({ event, context }) => {
   }
 });
 
-CTokenContract_LiquidateBorrow_loader(({ event, context }) => {
+CtokenContract_LiquidateBorrow_loader(({ event, context }) => {
   const liquidatorAddress: string = event.params.liquidator;
   const liquidatedAddress: string = event.params.borrower;
   const ctokenAddress: string = event.params.cTokenCollateral;
@@ -60,7 +60,7 @@ CTokenContract_LiquidateBorrow_loader(({ event, context }) => {
   });
 });
 
-CTokenContract_LiquidateBorrow_handler(({ event, context }) => {
+CtokenContract_LiquidateBorrow_handler(({ event, context }) => {
   const liquidatorAddress: string = event.params.liquidator;
   const liquidatedAddress: string = event.params.borrower;
   // context.log.debug(`processing liquidator ${liquidatorAddress}`);

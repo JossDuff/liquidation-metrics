@@ -12,7 +12,7 @@ networks: # Configuration of the blockchain networks that the project is deploye
           - event: MarketListed
             requiredEntities:
               - name: Ctoken
-      - name: CToken # User-defined contract name
+      - name: Ctoken # User-defined contract name
         abi_file_path: abis/CToken.json # File location of the contract ABI
         address: # An array of addresses that the contract is deployed to on the network
         handler: src/EventHandlers.ts # Location of the file that handles the events emitted by this contract
