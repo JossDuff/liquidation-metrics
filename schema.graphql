@@ -23,7 +23,7 @@ type Liquidatedaccount @entity {
 type Tokenwon @entity {
   # concat of address Liquidatoraccount and address cTokenCollateral
   id: ID!
-  # address of ctoken
+  # address of ctoken seized
   ctoken: String!
   # liquidator
   liquidatorAccountWon: Liquidatoraccount!
@@ -34,10 +34,22 @@ type Tokenwon @entity {
 type Tokenlost @entity {
   # concat of address borrower and address cTokenCollateral
   id: ID!
-  # address of ctoken
+  # address of ctoken seized
   ctoken: String!
   # Liquidatedaccount
   liquidatedAccountLost: Liquidatedaccount!
   # amount lost (seized) of cTokenCollateral by this account
   amountLost: BigInt!
+}
+
+type Ctoken @entity {
+  # address of the ctoken
+  id: ID!
+  totalRepaid: BigInt!
+  totalSeized: BigInt!
+  # increment each time this Ctoken contract emits liquidateBorrow
+  # number of times this ctoken has been the repayed Token in a liquidation
+  timesAsRepay: Int!
+  # number of times this ctoken has been the seized collateral in a liquidation
+  timesAsSeize: Int!
 }
