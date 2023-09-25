@@ -15,6 +15,6 @@
   },
   "dependencies": {
     "ts-node": "^10.9.1",
-    "envio": "0.0.13"
+    "envio": "0.0.0-exponential-backoff-hypersync-force-npm-publish-joss-20230925095815-4294c378"
   }
 }
