@@ -45,11 +45,12 @@ type Tokenlost @entity {
 type Ctoken @entity {
   # address of the ctoken
   id: ID!
+  # total amount this ctoken has been repaid in all liquidations
   totalRepaid: BigInt!
+  # total amount this ctoken seized in all liquidations
   totalSeized: BigInt!
-  # increment each time this Ctoken contract emits liquidateBorrow
-  # number of times this ctoken has been the repayed Token in a liquidation
+  # number of times this ctoken has been the repayed token in a liquidation
   timesAsRepay: Int!
-  # number of times this ctoken has been the seized collateral in a liquidation
+  # number of times this ctoken has been the seized collateral token in a liquidation
   timesAsSeize: Int!
 }
