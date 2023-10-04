@@ -45,6 +45,8 @@ type Tokenlost @entity {
 type Ctoken @entity {
   # address of the ctoken
   id: ID!
+  # number of times this ctoken contract has emitted a liquidation event
+  numberLiquidations: Int!
   # total amount this ctoken has been repaid in all liquidations
   totalRepaid: BigInt!
   # total amount this ctoken seized in all liquidations
@@ -53,4 +55,19 @@ type Ctoken @entity {
   timesAsRepay: Int!
   # number of times this ctoken has been the seized collateral token in a liquidation
   timesAsSeize: Int!
+  # the protocol that this ctoken is from
+  parentProtocol: Protocol!
+}
+
+type Protocol @entity {
+  # concat of protocol name and chain
+  id: ID!
+  # name of the protocol
+  name: String!
+  # The chain that this protocol is deploted on
+  chain: String!
+  # number of liquidation events that have been emitted on this protocol
+  numberLiquidations: Int!
+  # list of ctokens associated with this protocol
+  ctokens: [Ctoken!]! @derivedFrom(field: "parentProtocol")
 }

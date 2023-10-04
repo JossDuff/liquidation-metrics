@@ -9,20 +9,20 @@ importers:
   .:
     dependencies:
       envio:
-        specifier: 0.0.13
-        version: 0.0.13
+        specifier: 0.0.18
+        version: 0.0.18
       ts-node:
         specifier: ^10.9.1
-        version: 10.9.1(@types/node@18.17.17)(typescript@5.2.2)
+        version: 10.9.1(@types/node@18.18.3)(typescript@5.2.2)
     devDependencies:
       '@types/node':
-        specifier: ^18.16.1
-        version: 18.17.17
+        specifier: ^18.18.3
+        version: 18.18.3
       rescript:
-        specifier: ^10.1.2
+        specifier: ^10.1.4
         version: 10.1.4
       typescript:
-        specifier: ^5.0.4
+        specifier: ^5.2.2
         version: 5.2.2
 
   generated:
@@ -50,10 +50,10 @@ importers:
         version: 2.7.0
       pino:
         specifier: ^8.14.1
-        version: 8.15.1
+        version: 8.15.5
       pino-pretty:
         specifier: ^10.0.0
-        version: 10.2.0
+        version: 10.2.3
       postgres:
         specifier: ^3.3.4
         version: 3.3.5
@@ -164,8 +164,8 @@ packages:
     resolution: {integrity: sha512-N+0kuo9KgrUQ1Sn/ifDXsvg0TTleP7rIy4zOBGECxAljqvqfqpTfzx0Q1NUedOixRMBfe2Whhb056a42cWs26Q==}
     dev: false
 
-  /@types/node@18.17.17:
-    resolution: {integrity: sha512-cOxcXsQ2sxiwkykdJqvyFS+MLQPLvIdwh5l6gNg8qF6s+C7XSkEWOZjK+XhUZd+mYvHV/180g2cnCcIl4l06Pw==}
+  /@types/node@18.18.3:
+    resolution: {integrity: sha512-0OVfGupTl3NBFr8+iXpfZ8NR7jfFO+P1Q+IO/q0wbo02wYkP5gy36phojeYWpLQ6WAMjl+VfmqUk2YbUfp0irA==}
 
   /abort-controller@3.0.0:
     resolution: {integrity: sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==}
@@ -355,37 +355,37 @@ packages:
       once: 1.4.0
     dev: false
 
-  /envio-darwin-arm64@0.0.13:
-    resolution: {integrity: sha512-ku0D2YNGJ6cbWj1O59bt1e2ME8AXmt0kVukJuVoHWkdtuIidai5KCqfneSpLswCkdseuMFCa0til6kqQy8DosQ==}
+  /envio-darwin-arm64@0.0.18:
+    resolution: {integrity: sha512-3cUkWehz44WhpWxHvy4Ni4Rs7oZh668EZm3gE+HpMJKHxdytfxuNzdZuy6ocTmUphegigMPDWVfNu5ueLgnWPg==}
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
     dev: false
     optional: true
 
-  /envio-darwin-x64@0.0.13:
-    resolution: {integrity: sha512-fRWWCJMzQX61Ydfc1b+wTjjHhgbiCpiI9Uso/JgrxxsSwVT7QC6aBo35oKlRX/ZeL97fMqLkcF3vNxlRKSjvlg==}
+  /envio-darwin-x64@0.0.18:
+    resolution: {integrity: sha512-6ci4c5N6RnSRpagc+KnoG5pxFtewYslFruN1jHYghCkFrSZJ/QBhSTtv79oQ4KwkqHUTZ4VPinRh7Z8EyoyRkg==}
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
     dev: false
     optional: true
 
-  /envio-linux-x64@0.0.13:
-    resolution: {integrity: sha512-QuMmRRPGGcqyudE1RlOUjFxM8PbIwVIg8W9yy6YNYRHEi0Yd5MiQJGzy6l25gRaJvmPvjqhGX67d2oLdVHX8YA==}
+  /envio-linux-x64@0.0.18:
+    resolution: {integrity: sha512-0ndENaWUOz7YMDBJZi8sxcvyvQquFd+S2pcq1Pf57wB5wRqu24PJBYTfTcDmJ0vzZZIJwlGRoMkVfqutudhhmQ==}
     cpu: [x64]
     os: [linux]
     requiresBuild: true
     dev: false
     optional: true
 
-  /envio@0.0.13:
-    resolution: {integrity: sha512-dAvCsNW4BMAIThrvH0joI25SbvR0QTKsZ/pxqgY03D7rJDgpnaeDEltzH0tRLIKLB9QG0099r6mj1JkzPr+3ZQ==}
+  /envio@0.0.18:
+    resolution: {integrity: sha512-TFv25CYv+8nuOqtsvusLmclD7GdOnCU2A+r43gAX7p+8ZOtFDv208602nZeFVIOwsMHQ2w6ULpOgJP4sn7mt7w==}
     hasBin: true
     optionalDependencies:
-      envio-darwin-arm64: 0.0.13
-      envio-darwin-x64: 0.0.13
-      envio-linux-x64: 0.0.13
+      envio-darwin-arm64: 0.0.18
+      envio-darwin-x64: 0.0.18
+      envio-linux-x64: 0.0.18
     dev: false
 
   /escape-html@1.0.3:
@@ -536,7 +536,7 @@ packages:
     resolution: {integrity: sha512-2DcsyfABl+gVHEfCOaTrWgyt+tb6MSEGmKq+kI5HwLbIYgjgmMcV8KQ41uaKz1xxUcn9tJtgFbQUEVcEbd0FYw==}
     dependencies:
       function-bind: 1.1.1
-      has: 1.0.3
+      has: 1.0.4
       has-proto: 1.0.1
       has-symbols: 1.0.3
     dev: false
@@ -562,11 +562,9 @@ packages:
     engines: {node: '>= 0.4'}
     dev: false
 
-  /has@1.0.3:
-    resolution: {integrity: sha512-f2dvO0VU6Oej7RkWJGrehjbzMAjFp5/VKPp5tTpWIV4JHHZK1/BxbFRtf/siA2SWTe09caDmVtYYzWEIbBS4zw==}
+  /has@1.0.4:
+    resolution: {integrity: sha512-qdSAmqLF6209RFj4VVItywPMbm3vWylknmB3nvNiUIs72xAimcM8nVYxYr7ncvZq5qzk9MKIZR8ijqD/1QuYjQ==}
     engines: {node: '>= 0.4.0'}
-    dependencies:
-      function-bind: 1.1.1
     dev: false
 
   /help-me@4.2.0:
@@ -703,8 +701,9 @@ packages:
     resolution: {integrity: sha512-geUvdk7c+eizMNUDkRpW1wJwgfOiOeHbxBR/hLXK1aT6zmVSO0jsQcs7fj6MGw89jC/cjGfLcNOrtMYtGqm81g==}
     dev: false
 
-  /on-exit-leak-free@2.1.0:
-    resolution: {integrity: sha512-VuCaZZAjReZ3vUwgOB8LxAosIurDiAW0s13rI1YwmaP++jvcxP77AWoQvenZebpCA2m8WC1/EosPYPMjnRAp/w==}
+  /on-exit-leak-free@2.1.2:
+    resolution: {integrity: sha512-0eJJY6hXLGf1udHwfNftBqH+g73EU4B504nZeKpz1sYRKafAghwxEJunB2O7rDZkL4PGfsMVnTXZ2EjibbqcsA==}
+    engines: {node: '>=14.0.0'}
     dev: false
 
   /on-finished@2.4.1:
@@ -736,8 +735,8 @@ packages:
       split2: 4.2.0
     dev: false
 
-  /pino-pretty@10.2.0:
-    resolution: {integrity: sha512-tRvpyEmGtc2D+Lr3FulIZ+R1baggQ4S3xD2Ar93KixFEDx6SEAUP3W5aYuEw1C73d6ROrNcB2IXLteW8itlwhA==}
+  /pino-pretty@10.2.3:
+    resolution: {integrity: sha512-4jfIUc8TC1GPUfDyMSlW1STeORqkoxec71yhxIpLDQapUu8WOuoz2TTCoidrIssyz78LZC69whBMPIKCMbi3cw==}
     hasBin: true
     dependencies:
       colorette: 2.0.20
@@ -747,12 +746,12 @@ packages:
       help-me: 4.2.0
       joycon: 3.1.1
       minimist: 1.2.8
-      on-exit-leak-free: 2.1.0
+      on-exit-leak-free: 2.1.2
       pino-abstract-transport: 1.1.0
       pump: 3.0.0
       readable-stream: 4.4.2
       secure-json-parse: 2.7.0
-      sonic-boom: 3.3.0
+      sonic-boom: 3.5.0
       strip-json-comments: 3.1.1
     dev: false
 
@@ -760,21 +759,21 @@ packages:
     resolution: {integrity: sha512-cHjPPsE+vhj/tnhCy/wiMh3M3z3h/j15zHQX+S9GkTBgqJuTuJzYJ4gUyACLhDaJ7kk9ba9iRDmbH2tJU03OiA==}
     dev: false
 
-  /pino@8.15.1:
-    resolution: {integrity: sha512-Cp4QzUQrvWCRJaQ8Lzv0mJzXVk4z2jlq8JNKMGaixC2Pz5L4l2p95TkuRvYbrEbe85NQsDKrAd4zalf7Ml6WiA==}
+  /pino@8.15.5:
+    resolution: {integrity: sha512-KoTDSVRLiCWIJXTeAHNaflEXqsqCmyZkxfL09y+wT+NRo7j2Ieq30jBEC+GpE4HTQCQQyt3pDRhmwvCKjqzxfQ==}
     hasBin: true
     dependencies:
       atomic-sleep: 1.0.0
       fast-redact: 3.3.0
-      on-exit-leak-free: 2.1.0
+      on-exit-leak-free: 2.1.2
       pino-abstract-transport: 1.1.0
       pino-std-serializers: 6.2.2
       process-warning: 2.2.0
       quick-format-unescaped: 4.0.4
       real-require: 0.2.0
       safe-stable-stringify: 2.4.3
-      sonic-boom: 3.3.0
-      thread-stream: 2.4.0
+      sonic-boom: 3.5.0
+      thread-stream: 2.4.1
     dev: false
 
   /postgres@3.3.5:
@@ -965,8 +964,8 @@ packages:
       object-inspect: 1.12.3
     dev: false
 
-  /sonic-boom@3.3.0:
-    resolution: {integrity: sha512-LYxp34KlZ1a2Jb8ZQgFCK3niIHzibdwtwNUWKg0qQRzsDoJ3Gfgkf8KdBTFU3SkejDEIlWwnSnpVdOZIhFMl/g==}
+  /sonic-boom@3.5.0:
+    resolution: {integrity: sha512-02A0wEmj4d3aEIW/Sp6LMP1dNcG5cYmQPjhgtytIXa9tNmFZx3ragUPFmyBdgdM0yJJVSWwlLLEVHgrYfA0wtQ==}
     dependencies:
       atomic-sleep: 1.0.0
     dev: false
@@ -1003,8 +1002,8 @@ packages:
       bintrees: 1.0.2
     dev: false
 
-  /thread-stream@2.4.0:
-    resolution: {integrity: sha512-xZYtOtmnA63zj04Q+F9bdEay5r47bvpo1CaNqsKi7TpoJHcotUez8Fkfo2RJWpW91lnnaApdpRbVwCWsy+ifcw==}
+  /thread-stream@2.4.1:
+    resolution: {integrity: sha512-d/Ex2iWd1whipbT681JmTINKw0ZwOUBZm7+Gjs64DHuX34mmw8vJL2bFAaNacaW72zYiTJxSHi5abUuOi5nsfg==}
     dependencies:
       real-require: 0.2.0
     dev: false
@@ -1018,7 +1017,7 @@ packages:
     resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
     dev: false
 
-  /ts-node@10.9.1(@types/node@18.17.17)(typescript@5.2.2):
+  /ts-node@10.9.1(@types/node@18.18.3)(typescript@5.2.2):
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
     hasBin: true
     peerDependencies:
@@ -1037,7 +1036,7 @@ packages:
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
-      '@types/node': 18.17.17
+      '@types/node': 18.18.3
       acorn: 8.10.0
       acorn-walk: 8.2.0
       arg: 4.1.3

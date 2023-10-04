@@ -2,6 +2,8 @@
  *Please refer to https://docs.envio.dev for a thorough guide on all Envio indexer features*
  */
 
+import { protocolMap } from "./ProtocolDirectory";
+
 import {
   CtokenContract_LiquidateBorrow_loader,
   CtokenContract_LiquidateBorrow_handler,
@@ -46,6 +48,7 @@ CtokenContract_LiquidateBorrow_loader(({ event, context }) => {
 
 
 CtokenContract_LiquidateBorrow_handler(({ event, context }) => {
+  const emittedAddress = event.srcAddress;
   const seizeAmount = event.params.seizeTokens;
   const repayAmount = event.params.repayAmount;
 
@@ -133,6 +136,7 @@ function updateCreateCtokenRepaid(
   if (!!ctokenRepaid) {
     const updatedCtoken: ctokenEntity = {
       id: ctokenRepaid.id,
+      numberLiquidations: ctokenRepaid.numberLiquidations + 1,
       totalRepaid: ctokenRepaid.totalRepaid + repayAmount,
       totalSeized: ctokenRepaid.totalSeized,
       timesAsRepay: ctokenRepaid.timesAsRepay + 1,
@@ -142,6 +146,7 @@ function updateCreateCtokenRepaid(
   } else {
     const newCtoken: ctokenEntity = {
       id: ctokenRepaidAddress,
+      numberLiquidations: 1,
       totalRepaid: repayAmount,
       totalSeized: BigInt(0),
       timesAsRepay: 1,
@@ -159,6 +164,7 @@ function updateCreateCtokenSeized(
   if (!!ctokenSeized) {
     const updatedCtoken: ctokenEntity = {
       id: ctokenSeized.id,
+      numberLiquidations: ctokenRepaid.numberLiquidations + 1,
       totalRepaid: ctokenSeized.totalRepaid,
       totalSeized: ctokenSeized.totalSeized + seizeAmount,
       timesAsRepay: ctokenSeized.timesAsRepay,
@@ -168,6 +174,7 @@ function updateCreateCtokenSeized(
   } else {
     const newCtoken: ctokenEntity = {
       id: ctokenSeizedAddress,
+      numberLiquidations: 1,
       totalRepaid: BigInt(0),
       totalSeized: seizeAmount,
       timesAsRepay: 0,
