@@ -1,5 +1,4 @@
 // This allows me to go from ctoken address -> protocol name/chain
-export { protocolMap };
 
 class Protocol {
     name: string;
@@ -123,3 +122,5 @@ for (const protocol of protocols) {
         protocolMap.set(ctokenAddress, { name: protocol.name, chain: protocol.chain });
     }
 }
+
+export { protocolMap };
