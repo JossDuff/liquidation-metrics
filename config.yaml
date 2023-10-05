@@ -4,7 +4,7 @@ networks: # Configuration of the blockchain networks that the project is deploye
   - id: 1 # Chain identifier of the network (ethereum mainnet)
     start_block: 7710671 # comptroller creation block
     contracts: # Configuration for each contract
-      - name: Ctoken # User-defined contract name
+      - name: CtokenEthereum # User-defined contract name
         abi_file_path: abis/CToken.json # File location of the contract ABI
         address: [
           "0xe65cdB6479BaC1e22340E4E755fAE7E509EcD06c", 
@@ -34,13 +34,14 @@ networks: # Configuration of the blockchain networks that the project is deploye
             requiredEntities: # An array of entities that need to loaded and made accessible within the handler function (an empty array indicates that no entities are required)
               - name: Liquidatoraccount # The name of the required entity (must match an entity defined in `schema.graphql`)
               - name: Liquidatedaccount
-              - name: Tokenwon
-              - name: Tokenlost
+              - name: Accountwin
+              - name: Accountloss
               - name: Ctoken
+              - name: Protocol
   - id: 10 # Optimism
     start_block: 26050051 # creation block of sonne finance comptroller 
     contracts: # Configuration for each contract
-      - name: Ctoken # User-defined contract name
+      - name: CtokenOptimism # User-defined contract name
         abi_file_path: abis/CToken.json # File location of the contract ABI
         address: [
             "0xf7B5965f5C117Eb1B5450187c9DcFccc3C317e8E",
@@ -61,13 +62,14 @@ networks: # Configuration of the blockchain networks that the project is deploye
             requiredEntities: # An array of entities that need to loaded and made accessible within the handler function (an empty array indicates that no entities are required)
               - name: Liquidatoraccount # The name of the required entity (must match an entity defined in `schema.graphql`)
               - name: Liquidatedaccount
-              - name: Tokenwon
-              - name: Tokenlost
+              - name: Accountwin
+              - name: Accountloss
               - name: Ctoken
+              - name: Protocol
   - id: 43114 # Avalanche
     start_block: 3040000 # around the comptroller creation block for Benqui Lending
     contracts: # Configuration for each contract
-      - name: Ctoken # User-defined contract name
+      - name: CtokenAvalanche # User-defined contract name
         abi_file_path: abis/CToken.json # File location of the contract ABI
         address: [
             "0x5C0401e81Bc07Ca70fAD469b451682c0d747Ef1c",
@@ -90,13 +92,14 @@ networks: # Configuration of the blockchain networks that the project is deploye
             requiredEntities: # An array of entities that need to loaded and made accessible within the handler function (an empty array indicates that no entities are required)
               - name: Liquidatoraccount # The name of the required entity (must match an entity defined in `schema.graphql`)
               - name: Liquidatedaccount
-              - name: Tokenwon
-              - name: Tokenlost
+              - name: Accountwin
+              - name: Accountloss
               - name: Ctoken
+              - name: Protocol
   - id: 56 # BNB
     start_block: 2471512 # creation block of Venus comptroller 
     contracts: # Configuration for each contract
-      - name: Ctoken # User-defined contract name
+      - name: CtokenBinance # User-defined contract name
         abi_file_path: abis/CToken.json # File location of the contract ABI
         address:  [
             "0x26DA28954763B92139ED49283625ceCAf52C6f94",
@@ -136,6 +139,7 @@ networks: # Configuration of the blockchain networks that the project is deploye
             requiredEntities: # An array of entities that need to loaded and made accessible within the handler function (an empty array indicates that no entities are required)
               - name: Liquidatoraccount # The name of the required entity (must match an entity defined in `schema.graphql`)
               - name: Liquidatedaccount
-              - name: Tokenwon
-              - name: Tokenlost
+              - name: Accountwin
+              - name: Accountloss
               - name: Ctoken
+              - name: Protocol

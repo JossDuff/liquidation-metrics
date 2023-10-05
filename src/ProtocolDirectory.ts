@@ -115,8 +115,7 @@ let protocols = [
 
 ]
 
-// mapping for ctoken address -> protocol name & chain
-const protocolMap = new Map<string, { name: string; chain: string }>();
+let protocolMap = new Map<string, { name: string; chain: string }>();
 
 // generate the mapping
 for (const protocol of protocols) {

@@ -5,16 +5,23 @@
 import { protocolMap } from "./ProtocolDirectory";
 
 import {
-  CtokenContract_LiquidateBorrow_loader,
-  CtokenContract_LiquidateBorrow_handler,
+  CtokenEthereumContract_LiquidateBorrow_loader,
+  CtokenEthereumContract_LiquidateBorrow_handler,
+  CtokenOptimismContract_LiquidateBorrow_loader,
+  CtokenOptimismContract_LiquidateBorrow_handler,
+  CtokenAvalancheContract_LiquidateBorrow_loader,
+  CtokenAvalancheContract_LiquidateBorrow_handler,
+  CtokenBinanceContract_LiquidateBorrow_loader,
+  CtokenBinanceContract_LiquidateBorrow_handler,
 } from "../generated/src/Handlers.gen";
 
 import {
   liquidatoraccountEntity,
   liquidatedaccountEntity,
-  tokenwonEntity,
-  tokenlostEntity,
+  accountwinEntity,
+  accountlossEntity,
   ctokenEntity,
+  protocolEntity,
 } from "../generated/src/Types.gen";
 // import { Ctoken } from "./src/Converters.bs";
 
@@ -22,7 +29,14 @@ import {
 //   context.awesomeEntity.load(event.params.identifier)
 // });
 
-CtokenContract_LiquidateBorrow_loader(({ event, context }) => {
+CtokenOptimismContract_LiquidateBorrow_loader(({ event, context }) => {
+  // TODO: restructure event into the ethereum version
+  // CtokenEthereumContract_LiquidateBorrow_loader({ event, context });
+});
+
+
+CtokenEthereumContract_LiquidateBorrow_loader(({ event, context }) => {
+
   const liquidatorAddress: string = event.params.liquidator.toString();
   context.liquidatoraccount.load(liquidatorAddress);
 
@@ -30,25 +44,40 @@ CtokenContract_LiquidateBorrow_loader(({ event, context }) => {
   context.liquidatedaccount.load(liquidatedAddress);
 
   const ctokenRepaidAddress: string = event.srcAddress.toString();
-  context.ctoken.load(ctokenRepaidAddress);
+  context.ctoken.load(ctokenRepaidAddress, {
+    loaders: { loadParentProtocol: true },
+  });
 
   const ctokenSeizedAddress: string = event.params.cTokenCollateral.toString();
-  context.ctoken.load(ctokenSeizedAddress);
+  context.ctoken.load(ctokenSeizedAddress, {
+    loaders: { loadParentProtocol: true },
+  });
 
-  const tokenwonID: string = liquidatorAddress.concat(ctokenSeizedAddress);
-  context.tokenwon.load(tokenwonID, {
-    loaders: { loadLiquidatorAccountWon: true },
+  const protocol = getProtocol(event.srcAddress);
+  const protocolID = protocol.name.concat(protocol.chain);
+  context.protocol.load(protocolID);
+
+  const liquidatoraccountwinID: string = liquidatorAddress.concat(ctokenSeizedAddress);
+  context.accountwin.load(liquidatoraccountwinID, {
+    // TODO: do I need to load all this?
+    loaders: {
+      loadCtoken: { loadParentProtocol: true },
+      loadLiquidatorAccountWon: true
+    },
   });
 
   const tokenlostID: string = liquidatedAddress.concat(ctokenSeizedAddress);
-  context.tokenlost.load(tokenlostID, {
-    loaders: { loadLiquidatedAccountLost: true },
+  context.accountloss.load(tokenlostID, {
+    // TODO: do I need to load all this?
+    loaders: {
+      loadCtoken: { loadParentProtocol: true },
+      loadLiquidatedAccountLost: true
+    },
   });
 });
 
 
-CtokenContract_LiquidateBorrow_handler(({ event, context }) => {
-  const emittedAddress = event.srcAddress;
+CtokenEthereumContract_LiquidateBorrow_handler(({ event, context }) => {
   const seizeAmount = event.params.seizeTokens;
   const repayAmount = event.params.repayAmount;
 
@@ -64,30 +93,47 @@ CtokenContract_LiquidateBorrow_handler(({ event, context }) => {
   const updatedLiquidatedAccount = updateCreateLiquidatedAccount(liquidatedAccount, liquidatedAccountAddress);
   context.liquidatedaccount.set(updatedLiquidatedAccount);
 
+  // update/create protocol
+  const protocolData = getProtocol(event.srcAddress);
+  const protocolID: string = protocolData.name.concat(protocolData.chain);
+  const protocol = context.protocol.get(protocolID);
+  const updatedProtocol = updateCreateProtocol(protocol, protocolID, protocolData);
+  context.protocol.set(updatedProtocol);
+
   // update/create ctoken (repaid)
   const ctokenRepaidAddress: string = event.srcAddress.toString();
   const ctokenRepaid = context.ctoken.get(ctokenRepaidAddress);
-  const updatedCtokenRepaid = updateCreateCtokenRepaid(ctokenRepaid, ctokenRepaidAddress, repayAmount);
+  const updatedCtokenRepaid = updateCreateCtokenRepaid(ctokenRepaid, ctokenRepaidAddress, repayAmount, protocolID);
   context.ctoken.set(updatedCtokenRepaid);
 
   // update/create ctoken (seized)
   const ctokenSeizedAddress: string = event.params.cTokenCollateral.toString();
   const ctokenSeized = context.ctoken.get(ctokenSeizedAddress);
-  const updatedCtokenSeized = updateCreateCtokenSeized(ctokenSeized, ctokenSeizedAddress, seizeAmount);
+  const updatedCtokenSeized = updateCreateCtokenSeized(ctokenSeized, ctokenSeizedAddress, seizeAmount, protocolID);
   context.ctoken.set(updatedCtokenSeized);
 
-  // update/create tokenwon
-  const tokenWonID: string = liquidatorAccountAddress.concat(ctokenSeizedAddress);
-  const tokenWon = context.tokenwon.get(tokenWonID);
-  const updatedTokenWon = updateCreateTokenWon(tokenWon, tokenWonID, seizeAmount, ctokenSeizedAddress, liquidatorAccountAddress);
-  context.tokenwon.set(updatedTokenWon);
+  // update/create accountwin
+  const accountWinID: string = liquidatorAccountAddress.concat(ctokenSeizedAddress);
+  const accountWin = context.accountwin.get(accountWinID);
+  const updatedAccountWin = updateCreateAccountWin(accountWin, accountWinID, seizeAmount, ctokenSeizedAddress, liquidatorAccountAddress);
+  context.accountwin.set(updatedAccountWin);
 
-  // update/create tokenlost
-  const tokenLostID: string = liquidatedAccountAddress.concat(ctokenSeizedAddress);
-  const tokenLost = context.tokenlost.get(tokenLostID);
-  const updatedTokenLost = updateCreateTokenLost(tokenLost, tokenLostID, seizeAmount, ctokenSeizedAddress, liquidatedAccountAddress);
-  context.tokenlost.set(updatedTokenLost);
+  // update/create accountloss
+  const accountLossID: string = liquidatedAccountAddress.concat(ctokenSeizedAddress);
+  const accountLoss = context.accountloss.get(accountLossID);
+  const updatedAccountLoss = updateCreateAccountLoss(accountLoss, accountLossID, seizeAmount, ctokenSeizedAddress, liquidatedAccountAddress);
+  context.accountloss.set(updatedAccountLoss);
 });
+
+function getProtocol(ctokenAddress: string): { name: string, chain: string } {
+  let protocol = protocolMap.get(ctokenAddress);
+  if (!!protocol) {
+    return protocol;
+  }
+  else {
+    throw new Error("An address is in config.yaml that isn't associated with a protocol in ProtocolDirectory.ts");
+  }
+}
 
 
 function updateCreateLiquidatorAccount(
@@ -128,29 +174,54 @@ function updateCreateLiquidatedAccount(
   }
 }
 
+function updateCreateProtocol(
+  protocol: protocolEntity | undefined,
+  protocolID: string,
+  protocolData: { name: string, chain: string }
+): protocolEntity {
+  if (protocol) {
+    const updatedProtocol: protocolEntity = {
+      id: protocol.id,
+      name: protocol.name,
+      chain: protocol.chain,
+      numberLiquidations: protocol.numberLiquidations + 1,
+    };
+    return updatedProtocol;
+  } else {
+    const newProtocol: protocolEntity = {
+      id: protocolID,
+      name: protocolData.name,
+      chain: protocolData.chain,
+      numberLiquidations: 1
+    };
+    return newProtocol;
+  }
+}
+
 function updateCreateCtokenRepaid(
   ctokenRepaid: ctokenEntity | undefined,
   ctokenRepaidAddress: string,
-  repayAmount: bigint
+  repayAmount: bigint,
+  parentProtocolID: string
 ): ctokenEntity {
   if (!!ctokenRepaid) {
     const updatedCtoken: ctokenEntity = {
       id: ctokenRepaid.id,
-      numberLiquidations: ctokenRepaid.numberLiquidations + 1,
       totalRepaid: ctokenRepaid.totalRepaid + repayAmount,
       totalSeized: ctokenRepaid.totalSeized,
       timesAsRepay: ctokenRepaid.timesAsRepay + 1,
       timesAsSeize: ctokenRepaid.timesAsSeize,
+      parentProtocol: ctokenRepaid.parentProtocol,
     }
     return updatedCtoken;
   } else {
     const newCtoken: ctokenEntity = {
       id: ctokenRepaidAddress,
-      numberLiquidations: 1,
       totalRepaid: repayAmount,
       totalSeized: BigInt(0),
       timesAsRepay: 1,
       timesAsSeize: 0,
+      parentProtocol: parentProtocolID
     }
     return newCtoken;
   }
@@ -159,79 +230,80 @@ function updateCreateCtokenRepaid(
 function updateCreateCtokenSeized(
   ctokenSeized: ctokenEntity | undefined,
   ctokenSeizedAddress: string,
-  seizeAmount: bigint
+  seizeAmount: bigint,
+  parentProtocolID: string
 ): ctokenEntity {
   if (!!ctokenSeized) {
     const updatedCtoken: ctokenEntity = {
       id: ctokenSeized.id,
-      numberLiquidations: ctokenRepaid.numberLiquidations + 1,
       totalRepaid: ctokenSeized.totalRepaid,
       totalSeized: ctokenSeized.totalSeized + seizeAmount,
       timesAsRepay: ctokenSeized.timesAsRepay,
       timesAsSeize: ctokenSeized.timesAsSeize + 1,
+      parentProtocol: ctokenSeized.parentProtocol,
     }
     return updatedCtoken;
   } else {
     const newCtoken: ctokenEntity = {
       id: ctokenSeizedAddress,
-      numberLiquidations: 1,
       totalRepaid: BigInt(0),
       totalSeized: seizeAmount,
       timesAsRepay: 0,
       timesAsSeize: 1,
+      parentProtocol: parentProtocolID
     }
     return newCtoken;
   }
 }
 
-function updateCreateTokenWon(
-  tokenWon: tokenwonEntity | undefined,
-  tokenWonID: string,
+function updateCreateAccountWin(
+  accountWin: accountwinEntity | undefined,
+  accountWinID: string,
   seizeAmount: bigint,
   ctokenSeizedAddress: string,
   liquidatorAccountAddress: string,
-): tokenwonEntity {
-  if (!!tokenWon) {
-    const updatedTokenWon: tokenwonEntity = {
-      id: tokenWon.id,
-      ctoken: tokenWon.ctoken,
-      liquidatorAccountWon: tokenWon.liquidatorAccountWon,
-      amountWon: tokenWon.amountWon + seizeAmount,
+): accountwinEntity {
+  if (!!accountWin) {
+    const updatedAccountWin: accountwinEntity = {
+      id: accountWin.id,
+      ctoken: accountWin.ctoken,
+      liquidatorAccountWon: accountWin.liquidatorAccountWon,
+      amountWon: accountWin.amountWon + seizeAmount,
     };
-    return updatedTokenWon;
+    return updatedAccountWin;
   } else {
-    const newTokenWon: tokenwonEntity = {
-      id: tokenWonID,
+    const newAccountWin: accountwinEntity = {
+      id: accountWinID,
       ctoken: ctokenSeizedAddress,
       liquidatorAccountWon: liquidatorAccountAddress,
       amountWon: seizeAmount,
     };
-    return newTokenWon;
+    return newAccountWin;
   }
 }
 
-function updateCreateTokenLost(
-  tokenLost: tokenlostEntity | undefined,
-  tokenLostID: string,
+function updateCreateAccountLoss(
+  accountLoss: accountlossEntity | undefined,
+  accountLossID: string,
   seizeAmount: bigint,
   ctokenSeizedAddress: string,
   liquidatedAccountAddress: string,
-): tokenlostEntity {
-  if (!!tokenLost) {
-    const updatedTokenLost: tokenlostEntity = {
-      id: tokenLost.id,
-      ctoken: tokenLost.ctoken,
-      liquidatedAccountLost: tokenLost.liquidatedAccountLost,
-      amountLost: tokenLost.amountLost + seizeAmount,
+): accountlossEntity {
+  if (!!accountLoss) {
+    const updatedAccountLoss: accountlossEntity = {
+      id: accountLoss.id,
+      ctoken: accountLoss.ctoken,
+      liquidatedAccountLost: accountLoss.liquidatedAccountLost,
+      amountLost: accountLoss.amountLost + seizeAmount,
     };
-    return updatedTokenLost;
+    return updatedAccountLoss;
   } else {
-    const newTokenLost: tokenlostEntity = {
-      id: tokenLostID,
+    const newAccountLoss: accountlossEntity = {
+      id: accountLossID,
       ctoken: ctokenSeizedAddress,
       liquidatedAccountLost: liquidatedAccountAddress,
       amountLost: seizeAmount,
     };
-    return newTokenLost;
+    return newAccountLoss;
   }
 }
