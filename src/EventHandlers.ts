@@ -22,20 +22,52 @@ import {
   accountlossEntity,
   ctokenEntity,
   protocolEntity,
+  eventLog,
+  CtokenEthereumContract_LiquidateBorrowEvent_eventArgs,
+  CtokenOptimismContract_LiquidateBorrowEvent_eventArgs,
+  CtokenAvalancheContract_LiquidateBorrowEvent_eventArgs,
+  CtokenBinanceContract_LiquidateBorrowEvent_eventArgs,
+  CtokenEthereumContract_LiquidateBorrowEvent_loaderContext,
+  CtokenOptimismContract_LiquidateBorrowEvent_loaderContext,
+  CtokenAvalancheContract_LiquidateBorrowEvent_loaderContext,
+  CtokenBinanceContract_LiquidateBorrowEvent_loaderContext,
+  CtokenEthereumContract_LiquidateBorrowEvent_context,
+  CtokenOptimismContract_LiquidateBorrowEvent_context,
+  CtokenAvalancheContract_LiquidateBorrowEvent_context,
+  CtokenBinanceContract_LiquidateBorrowEvent_context
 } from "../generated/src/Types.gen";
+import { liquidatedaccountEntity_decode } from "./src/Types.bs";
 // import { Ctoken } from "./src/Converters.bs";
 
 // MyAwesomeContractContract_AwesomeEvent_loader(({ event, context }) => {
 //   context.awesomeEntity.load(event.params.identifier)
 // });
 
+CtokenEthereumContract_LiquidateBorrow_loader(({ event, context }) => {
+  chainAgnostic_LiquidateBorrow_Loader(event, context);
+});
 CtokenOptimismContract_LiquidateBorrow_loader(({ event, context }) => {
-  // TODO: restructure event into the ethereum version
-  // CtokenEthereumContract_LiquidateBorrow_loader({ event, context });
+  chainAgnostic_LiquidateBorrow_Loader(event, context);
+});
+CtokenAvalancheContract_LiquidateBorrow_loader(({ event, context }) => {
+  chainAgnostic_LiquidateBorrow_Loader(event, context);
+});
+CtokenBinanceContract_LiquidateBorrow_loader(({ event, context }) => {
+  chainAgnostic_LiquidateBorrow_Loader(event, context);
 });
 
-
-CtokenEthereumContract_LiquidateBorrow_loader(({ event, context }) => {
+function chainAgnostic_LiquidateBorrow_Loader(
+  event:
+    eventLog<CtokenEthereumContract_LiquidateBorrowEvent_eventArgs> |
+    eventLog<CtokenOptimismContract_LiquidateBorrowEvent_eventArgs> |
+    eventLog<CtokenAvalancheContract_LiquidateBorrowEvent_eventArgs> |
+    eventLog<CtokenBinanceContract_LiquidateBorrowEvent_eventArgs>,
+  context:
+    CtokenEthereumContract_LiquidateBorrowEvent_loaderContext |
+    CtokenOptimismContract_LiquidateBorrowEvent_loaderContext |
+    CtokenAvalancheContract_LiquidateBorrowEvent_loaderContext |
+    CtokenBinanceContract_LiquidateBorrowEvent_loaderContext
+) {
 
   const liquidatorAddress: string = event.params.liquidator.toString();
   context.liquidatoraccount.load(liquidatorAddress);
@@ -74,10 +106,33 @@ CtokenEthereumContract_LiquidateBorrow_loader(({ event, context }) => {
       loadLiquidatedAccountLost: true
     },
   });
-});
-
+}
 
 CtokenEthereumContract_LiquidateBorrow_handler(({ event, context }) => {
+  chainAgnostic_LiquidateBorrow_Handler(event, context);
+});
+CtokenOptimismContract_LiquidateBorrow_handler(({ event, context }) => {
+  chainAgnostic_LiquidateBorrow_Handler(event, context);
+});
+CtokenAvalancheContract_LiquidateBorrow_handler(({ event, context }) => {
+  chainAgnostic_LiquidateBorrow_Handler(event, context);
+});
+CtokenBinanceContract_LiquidateBorrow_handler(({ event, context }) => {
+  chainAgnostic_LiquidateBorrow_Handler(event, context);
+});
+
+function chainAgnostic_LiquidateBorrow_Handler(
+  event:
+    eventLog<CtokenEthereumContract_LiquidateBorrowEvent_eventArgs> |
+    eventLog<CtokenOptimismContract_LiquidateBorrowEvent_eventArgs> |
+    eventLog<CtokenAvalancheContract_LiquidateBorrowEvent_eventArgs> |
+    eventLog<CtokenBinanceContract_LiquidateBorrowEvent_eventArgs>,
+  context:
+    CtokenEthereumContract_LiquidateBorrowEvent_context |
+    CtokenOptimismContract_LiquidateBorrowEvent_context |
+    CtokenAvalancheContract_LiquidateBorrowEvent_context |
+    CtokenBinanceContract_LiquidateBorrowEvent_context
+) {
   const seizeAmount = event.params.seizeTokens;
   const repayAmount = event.params.repayAmount;
 
@@ -123,8 +178,10 @@ CtokenEthereumContract_LiquidateBorrow_handler(({ event, context }) => {
   const accountLoss = context.accountloss.get(accountLossID);
   const updatedAccountLoss = updateCreateAccountLoss(accountLoss, accountLossID, seizeAmount, ctokenSeizedAddress, liquidatedAccountAddress);
   context.accountloss.set(updatedAccountLoss);
-});
+}
 
+// helper function to get protocol name and chain given a ctoken's address
+// utilizes mapping in src/ProtocolDirectory.ts
 function getProtocol(ctokenAddress: string): { name: string, chain: string } {
   let protocol = protocolMap.get(ctokenAddress);
   if (!!protocol) {
@@ -134,7 +191,6 @@ function getProtocol(ctokenAddress: string): { name: string, chain: string } {
     throw new Error("An address is in config.yaml that isn't associated with a protocol in ProtocolDirectory.ts");
   }
 }
-
 
 function updateCreateLiquidatorAccount(
   liquidatorAccount: liquidatoraccountEntity | undefined,
