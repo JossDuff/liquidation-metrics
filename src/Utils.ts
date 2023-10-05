@@ -68,7 +68,6 @@ function updateCreateProtocol(
         const updatedProtocol: protocolEntity = {
             id: protocol.id,
             name: protocol.name,
-            chain: protocol.chain,
             numberLiquidations: protocol.numberLiquidations + 1,
         };
         return updatedProtocol;
@@ -76,7 +75,6 @@ function updateCreateProtocol(
         const newProtocol: protocolEntity = {
             id: protocolID,
             name: protocolData.name,
-            chain: protocolData.chain,
             numberLiquidations: 1
         };
         return newProtocol;

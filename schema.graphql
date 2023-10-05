@@ -68,8 +68,6 @@ type Protocol @entity {
   id: ID!
   # name of the protocol
   name: String!
-  # The chain that this protocol is deploted on
-  chain: String!
   # number of liquidation events that have been emitted on this protocol
   numberLiquidations: Int!
   # list of ctokens associated with this protocol

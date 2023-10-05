@@ -14,7 +14,7 @@ class Protocol {
 
 let protocols = [
     new Protocol(
-        "CompoundV2",
+        "Compound V2",
         "1",
         [
             "0xe65cdB6479BaC1e22340E4E755fAE7E509EcD06c",
@@ -181,6 +181,28 @@ let protocols = [
             "0x4645e0952678E9566FB529D9313f5730E4e1C412",
             "0xE724FfA5D30782499086682C8362CB3673bF69ae",
             "0x04F0fd3CD03B17a3E5921c0170ca6dD3952841cA",
+        ]
+    ),
+    new Protocol(
+        "Strike Finance",
+        "1",
+        [
+            "0xbEe9Cf658702527b0AcB2719c1FAA29EdC006a92",
+            "0x69702cfd7DAd8bCcAA24D6B440159404AAA140F5",
+            "0x3774E825d567125988Fb293e926064B6FAa71DAB",
+            "0x18A908eD663823C908A900b934D6249d4befbE44",
+            "0x3F3B3B269d9f7088B022290906acff8710914be1",
+            "0x280f76a218DDC8d56B490B5835e251E55a2e8F8d",
+            "0x9d1C2A187cf908aEd8CFAe2353Ef72F06223d54D",
+            "0xA28d2EC98C6bb076A2e152dC9e0d94C8C01e36B0",
+            "0xb7E11002228D599F2a64b0C44D2299C9c644ff26",
+            "0xdBee1d8C452c781C17Ea20115CbaD0d5f627a680",
+            "0x4164e5b047842Ad7dFf18fc6A6e63a1e40610f46",
+            "0xa9bA206cfb0548bF93eF1040dDDD5121da9eaf85",
+            "0xf24A7D2077285E192Aa7dF957a4a699c144510d8",
+            "0x54A0ed40abEa082ed62C3a4f92621b8ed47732a2",
+            "0xC13FDF3aF7ec87dcA256d9C11Ff96405D360F522",
+            "0x1EBfD36223079dC79FefC62260dB9E25f3F5e2C7",
         ]
     )
 ]
