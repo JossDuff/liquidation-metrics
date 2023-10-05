@@ -14,7 +14,7 @@ class Protocol {
 
 let protocols = [
     new Protocol(
-        "Compound V2",
+        "CompoundV2",
         "1",
         [
             "0xe65cdB6479BaC1e22340E4E755fAE7E509EcD06c",
