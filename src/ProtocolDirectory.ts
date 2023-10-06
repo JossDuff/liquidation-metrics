@@ -93,7 +93,7 @@ let protocols = [
         ]
     ),
     new Protocol(
-        "Benqui Lending",
+        "Benqi Lending",
         "43114",
         [
             "0x5C0401e81Bc07Ca70fAD469b451682c0d747Ef1c",

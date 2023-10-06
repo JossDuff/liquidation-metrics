@@ -40,12 +40,6 @@ import {
   CtokenBinanceContract_LiquidateBorrowEvent_context
 } from "../generated/src/Types.gen";
 
-// import { liquidatedaccountEntity_decode } from "./src/Types.bs";
-// import { Ctoken } from "./src/Converters.bs";
-
-// MyAwesomeContractContract_AwesomeEvent_loader(({ event, context }) => {
-//   context.awesomeEntity.load(event.params.identifier)
-// });
 
 CtokenEthereumContract_LiquidateBorrow_loader(({ event, context }) => {
   chainAgnostic_LiquidateBorrow_Loader(event, context);
@@ -95,7 +89,6 @@ function chainAgnostic_LiquidateBorrow_Loader(
 
   const liquidatoraccountwinID: string = liquidatorAddress.concat(ctokenSeizedAddress);
   context.accountwin.load(liquidatoraccountwinID, {
-    // TODO: do I need to load all this?
     loaders: {
       loadCtoken: { loadParentProtocol: true },
       loadLiquidatorAccountWon: true
@@ -104,7 +97,6 @@ function chainAgnostic_LiquidateBorrow_Loader(
 
   const tokenlostID: string = liquidatedAddress.concat(ctokenSeizedAddress);
   context.accountloss.load(tokenlostID, {
-    // TODO: do I need to load all this?
     loaders: {
       loadCtoken: { loadParentProtocol: true },
       loadLiquidatedAccountLost: true

@@ -126,12 +126,12 @@ networks: # Configuration of the blockchain networks that the project is deploye
               - name: Ctoken
               - name: Protocol
   - id: 43114 # Avalanche
-    start_block: 3040000 # around the comptroller creation block for Benqui Lending
+    start_block: 3040000 # around the comptroller creation block for Benqi Lending
     contracts: # Configuration for each contract
       - name: CtokenAvalanche # User-defined contract name
         abi_file_path: abis/CToken.json # File location of the contract ABI
         address: [
-            # Benqui lending
+            # Benqi lending
             "0x5C0401e81Bc07Ca70fAD469b451682c0d747Ef1c",
             "0xF362feA9659cf036792c9cb02f8ff8198E21B4cB",
             "0x89a415b3D20098E6A6C8f7a59001C67BD3129821",

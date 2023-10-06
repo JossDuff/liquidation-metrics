@@ -10,7 +10,7 @@ import {
 } from "../generated/src/Types.gen";
 
 // helper function to get protocol name and chain given a ctoken's address
-// utilizes mapping in src/ProtocolDirectory.ts
+// utilizes mapping from src/ProtocolDirectory.ts
 function getProtocol(ctokenAddress: string): { name: string, chain: string } {
     let protocol = protocolMap.get(ctokenAddress);
     if (!!protocol) {
