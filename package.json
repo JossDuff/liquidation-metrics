@@ -14,7 +14,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "envio": "0.0.18",
+    "envio": "0.0.19",
     "ts-node": "^10.9.1"
   }
 }
