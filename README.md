@@ -10,11 +10,9 @@ Targeting Compound V2 forks because Compound V2 is one of the most forked lendin
 
 [x] Venus (BNB - 56)
 
-[x] Benqui Lending (Avalanche - 43114)
+[x] Benqi Lending (Avalanche - 43114)
 
 [x] Sonne Finance (Optimism - 10)
-
-[ ] Sonne Finance (Base - 8453) 
 
 [x] Flux Finance (eth mainnet - 1)
 
