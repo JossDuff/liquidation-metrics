@@ -20,8 +20,8 @@ import {
   CtokenOptimismContract_LiquidateBorrow_handler,
   CtokenAvalancheContract_LiquidateBorrow_loader,
   CtokenAvalancheContract_LiquidateBorrow_handler,
-  // CtokenBinanceContract_LiquidateBorrow_loader,
-  // CtokenBinanceContract_LiquidateBorrow_handler,
+  CtokenBinanceContract_LiquidateBorrow_loader,
+  CtokenBinanceContract_LiquidateBorrow_handler,
 } from "../generated/src/Handlers.gen";
 
 import {
@@ -29,15 +29,15 @@ import {
   CtokenEthereumContract_LiquidateBorrowEvent_eventArgs,
   CtokenOptimismContract_LiquidateBorrowEvent_eventArgs,
   CtokenAvalancheContract_LiquidateBorrowEvent_eventArgs,
-  // CtokenBinanceContract_LiquidateBorrowEvent_eventArgs,
+  CtokenBinanceContract_LiquidateBorrowEvent_eventArgs,
   CtokenEthereumContract_LiquidateBorrowEvent_loaderContext,
   CtokenOptimismContract_LiquidateBorrowEvent_loaderContext,
   CtokenAvalancheContract_LiquidateBorrowEvent_loaderContext,
-  // CtokenBinanceContract_LiquidateBorrowEvent_loaderContext,
+  CtokenBinanceContract_LiquidateBorrowEvent_loaderContext,
   CtokenEthereumContract_LiquidateBorrowEvent_context,
   CtokenOptimismContract_LiquidateBorrowEvent_context,
   CtokenAvalancheContract_LiquidateBorrowEvent_context,
-  // CtokenBinanceContract_LiquidateBorrowEvent_context
+  CtokenBinanceContract_LiquidateBorrowEvent_context
 } from "../generated/src/Types.gen";
 
 
@@ -50,21 +50,21 @@ CtokenOptimismContract_LiquidateBorrow_loader(({ event, context }) => {
 CtokenAvalancheContract_LiquidateBorrow_loader(({ event, context }) => {
   chainAgnostic_LiquidateBorrow_Loader(event, context);
 });
-// CtokenBinanceContract_LiquidateBorrow_loader(({ event, context }) => {
-//   chainAgnostic_LiquidateBorrow_Loader(event, context);
-// });
+CtokenBinanceContract_LiquidateBorrow_loader(({ event, context }) => {
+  chainAgnostic_LiquidateBorrow_Loader(event, context);
+});
 
 function chainAgnostic_LiquidateBorrow_Loader(
   event:
     eventLog<CtokenEthereumContract_LiquidateBorrowEvent_eventArgs> |
     eventLog<CtokenOptimismContract_LiquidateBorrowEvent_eventArgs> |
-    eventLog<CtokenAvalancheContract_LiquidateBorrowEvent_eventArgs>,
-  // eventLog<CtokenBinanceContract_LiquidateBorrowEvent_eventArgs>,
+    eventLog<CtokenAvalancheContract_LiquidateBorrowEvent_eventArgs> |
+    eventLog<CtokenBinanceContract_LiquidateBorrowEvent_eventArgs>,
   context:
     CtokenEthereumContract_LiquidateBorrowEvent_loaderContext |
     CtokenOptimismContract_LiquidateBorrowEvent_loaderContext |
-    CtokenAvalancheContract_LiquidateBorrowEvent_loaderContext
-  // CtokenBinanceContract_LiquidateBorrowEvent_loaderContext
+    CtokenAvalancheContract_LiquidateBorrowEvent_loaderContext |
+    CtokenBinanceContract_LiquidateBorrowEvent_loaderContext
 ) {
 
   const liquidatorAddress: string = event.params.liquidator.toString();
@@ -113,21 +113,21 @@ CtokenOptimismContract_LiquidateBorrow_handler(({ event, context }) => {
 CtokenAvalancheContract_LiquidateBorrow_handler(({ event, context }) => {
   chainAgnostic_LiquidateBorrow_Handler(event, context);
 });
-// CtokenBinanceContract_LiquidateBorrow_handler(({ event, context }) => {
-//   chainAgnostic_LiquidateBorrow_Handler(event, context);
-// });
+CtokenBinanceContract_LiquidateBorrow_handler(({ event, context }) => {
+  chainAgnostic_LiquidateBorrow_Handler(event, context);
+});
 
 function chainAgnostic_LiquidateBorrow_Handler(
   event:
     eventLog<CtokenEthereumContract_LiquidateBorrowEvent_eventArgs> |
     eventLog<CtokenOptimismContract_LiquidateBorrowEvent_eventArgs> |
-    eventLog<CtokenAvalancheContract_LiquidateBorrowEvent_eventArgs>,
-  // eventLog<CtokenBinanceContract_LiquidateBorrowEvent_eventArgs>,
+    eventLog<CtokenAvalancheContract_LiquidateBorrowEvent_eventArgs> |
+    eventLog<CtokenBinanceContract_LiquidateBorrowEvent_eventArgs>,
   context:
     CtokenEthereumContract_LiquidateBorrowEvent_context |
     CtokenOptimismContract_LiquidateBorrowEvent_context |
-    CtokenAvalancheContract_LiquidateBorrowEvent_context
-  // CtokenBinanceContract_LiquidateBorrowEvent_context
+    CtokenAvalancheContract_LiquidateBorrowEvent_context |
+    CtokenBinanceContract_LiquidateBorrowEvent_context
 ) {
   const seizeAmount = event.params.seizeTokens;
   const repayAmount = event.params.repayAmount;
