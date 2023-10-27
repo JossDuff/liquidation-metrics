@@ -1,50 +1,50 @@
 # LiquidateBorrow(address liquidator, address borrower, uint repayAmount, address cTokenCollateral, uint seizeTokens)
 
 # Liquidator accounts (possibly bots)
-type Liquidatoraccount @entity {
+type liquidatoraccount @entity {
   # address liquidator
   id: ID!
   # number of liquidations
   numberLiquidations: Int!
-  # list of ctokens and amounts won (seized from Liquidatedaccount)
-  tokensWon: [Accountwin!]! @derivedFrom(field: "liquidatorAccountWon")
+  # list of ctokens and amounts won (seized from liquidatedaccount)
+  tokensWon: [accountwin!]! @derivedFrom(field: "liquidatorAccountWon")
 }
 
 # accounts that have been liquidated
-type Liquidatedaccount @entity {
-  # concat of address Liquidatoraccount and address cTokenCollateral
+type liquidatedaccount @entity {
+  # concat of address liquidatoraccount and address cTokenCollateral
   id: ID!
   # number of liquidations
   numberLiquidations: Int!
-  # list of ctokens and amounts lost (seized by Liquidatoraccount)
-  tokensLost: [Accountloss!]! @derivedFrom(field: "liquidatedAccountLost")
+  # list of ctokens and amounts lost (seized by liquidatoraccount)
+  tokensLost: [accountloss!]! @derivedFrom(field: "liquidatedAccountLost")
 }
 
 # amount of each ctoken that a liquidator has won (seized)
-type Accountwin @entity {
-  # concat of address Liquidatoraccount and address cTokenCollateral
+type accountwin @entity {
+  # concat of address liquidatoraccount and address cTokenCollateral
   id: ID!
   # address of ctoken seized
-  ctoken: Ctoken!
+  ctoken: ctoken!
   # liquidator
-  liquidatorAccountWon: Liquidatoraccount!
-  # amount won (seized) of cTokenCollateral by this Liquidatoraccount
+  liquidatorAccountWon: liquidatoraccount!
+  # amount won (seized) of cTokenCollateral by this liquidatoraccount
   amountWon: BigInt!
 }
 
 # amount of each ctoken that a liquidated account has lost (had seized)
-type Accountloss @entity {
+type accountloss @entity {
   # concat of address borrower and address cTokenCollateral
   id: ID!
   # address of ctoken seized
-  ctoken: Ctoken!
-  # Liquidatedaccount
-  liquidatedAccountLost: Liquidatedaccount!
+  ctoken: ctoken!
+  # liquidatedaccount
+  liquidatedAccountLost: liquidatedaccount!
   # amount lost (seized) of cTokenCollateral by this account
   amountLost: BigInt!
 }
 
-type Ctoken @entity {
+type ctoken @entity {
   # address of the ctoken
   id: ID!
   # total amount this ctoken has been repaid in all liquidations
@@ -56,14 +56,14 @@ type Ctoken @entity {
   # number of times this ctoken has been the seized collateral token in a liquidation
   timesAsSeize: Int!
   # the protocol that this ctoken is from
-  parentProtocol: Protocol!
+  parentProtocol: protocol!
   # list of accounts that have had this ctoken seized
-  liquidatedAccounts: [Accountloss!]! @derivedFrom(field: "Ctoken")
+  liquidatedAccounts: [accountloss!]! @derivedFrom(field: "ctoken")
   # list of accounts that have seized this ctoken
-  liquidatorAccounts: [Accountwin!]! @derivedFrom(field: "Ctoken")
+  liquidatorAccounts: [accountwin!]! @derivedFrom(field: "ctoken")
 }
 
-type Protocol @entity {
+type protocol @entity {
   # concat of protocol name and chain
   id: ID!
   # name of the protocol
@@ -71,5 +71,5 @@ type Protocol @entity {
   # number of liquidation events that have been emitted on this protocol
   numberLiquidations: Int!
   # list of ctokens associated with this protocol
-  childCtokens: [Ctoken!]! @derivedFrom(field: "parentProtocol")
+  childCtokens: [ctoken!]! @derivedFrom(field: "parentProtocol")
 }
