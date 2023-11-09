@@ -9,15 +9,15 @@ importers:
   .:
     dependencies:
       envio:
-        specifier: 0.0.21
-        version: 0.0.21
+        specifier: 0.0.22
+        version: 0.0.22
       ts-node:
         specifier: ^10.9.1
-        version: 10.9.1(@types/node@18.18.3)(typescript@5.2.2)
+        version: 10.9.1(@types/node@18.18.9)(typescript@5.2.2)
     devDependencies:
       '@types/node':
-        specifier: ^18.18.3
-        version: 18.18.3
+        specifier: ^18.18.9
+        version: 18.18.9
       rescript:
         specifier: ^10.1.4
         version: 10.1.4
@@ -204,8 +204,10 @@ packages:
     resolution: {integrity: sha512-N+0kuo9KgrUQ1Sn/ifDXsvg0TTleP7rIy4zOBGECxAljqvqfqpTfzx0Q1NUedOixRMBfe2Whhb056a42cWs26Q==}
     dev: false
 
-  /@types/node@18.18.3:
-    resolution: {integrity: sha512-0OVfGupTl3NBFr8+iXpfZ8NR7jfFO+P1Q+IO/q0wbo02wYkP5gy36phojeYWpLQ6WAMjl+VfmqUk2YbUfp0irA==}
+  /@types/node@18.18.9:
+    resolution: {integrity: sha512-0f5klcuImLnG4Qreu9hPj/rEfFq6YRc5n2mAjSsH+ec/mJL+3voBH0+8T7o8RpFjH7ovc+TRsL/c7OYIQsPTfQ==}
+    dependencies:
+      undici-types: 5.26.5
 
   /abitype@0.9.8(typescript@5.2.2):
     resolution: {integrity: sha512-puLifILdm+8sjyss4S+fsUN09obiT1g2YW6CtcQF+QDzxR0euzgEB29MZujC6zMk2a6SVmtttq1fc6+YFA7WYQ==}
@@ -236,13 +238,13 @@ packages:
       negotiator: 0.6.3
     dev: false
 
-  /acorn-walk@8.2.0:
-    resolution: {integrity: sha512-k+iyHEuPgSw6SbuDpGQM+06HQUa04DZ3o+F6CSzXMvvI5KMvnaEqXe+YVe555R9nn6GPt404fos4wcgpw12SDA==}
+  /acorn-walk@8.3.0:
+    resolution: {integrity: sha512-FS7hV565M5l1R08MXqo8odwMTB02C2UqzB17RVgu9EyuYFBqJZ3/ZY97sQD5FewVu1UyDFc1yztUDrAwT0EypA==}
     engines: {node: '>=0.4.0'}
     dev: false
 
-  /acorn@8.10.0:
-    resolution: {integrity: sha512-F0SAmZ8iUtS//m8DmCTA0jlh6TDKkHQyK6xc6V4KDTyZKA9dnvX9/3sRTVQrWm79glUAZbnmmNcdYwUIHWVybw==}
+  /acorn@8.11.2:
+    resolution: {integrity: sha512-nc0Axzp/0FILLEVsm4fNwLCwMttvhEI263QtVPQcbpfZZ3ts0hLsZGOpE6czNlid7CJ9MlyH8reXkpsf3YUY4w==}
     engines: {node: '>=0.4.0'}
     hasBin: true
     dev: false
@@ -455,37 +457,37 @@ packages:
       once: 1.4.0
     dev: false
 
-  /envio-darwin-arm64@0.0.21:
-    resolution: {integrity: sha512-YvHSx1wvVY96PTvzXDZI4f0lB4KnDIChwuy/PSHdhJavEyTs2G5hvKUIt/X2Kuu9k1dA0rjrBrk+ktwbFqXzsw==}
+  /envio-darwin-arm64@0.0.22:
+    resolution: {integrity: sha512-DOKLDIlUa4NPpCBs1klez4raKLj3fr/mv6Fj38FcTUmJu735xMhS4t65bDUxILhm93hiPKgrBFIJl8/dhAdlKg==}
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
     dev: false
     optional: true
 
-  /envio-darwin-x64@0.0.21:
-    resolution: {integrity: sha512-Mvwr6G7iOXx3+cmV7BwKbuaAyhyQ5NNzWNUi2RwPFbHd9SgCMIFhXiQYwI0mmmxsvUL5Whgpo4RPHsKRL665/Q==}
+  /envio-darwin-x64@0.0.22:
+    resolution: {integrity: sha512-R4k3Y54IqyPxuiKvAo+FtYfsf0EdoC+YaksSKBqaUar3CIvL+MqS3W/xS14+yREUz454SyVShr2ML6FQ4T7+GA==}
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
     dev: false
     optional: true
 
-  /envio-linux-x64@0.0.21:
-    resolution: {integrity: sha512-vAGOfkJzy3kd6PwO5gkdw/B1H8/7bDOkad+QDY0Ou8BEX3NHfvgdy+HqI6gQg6khMSO9Nk5V3SOQWvfqVs0EXA==}
+  /envio-linux-x64@0.0.22:
+    resolution: {integrity: sha512-mQo5/i7w7r1805uVw0ryRtpChUaqLXSbLXwETo2NjUlXGRHTZ6lPTmkLwOdKLUbCOtKbuFcP78Cta3B8d/0ioQ==}
     cpu: [x64]
     os: [linux]
     requiresBuild: true
     dev: false
     optional: true
 
-  /envio@0.0.21:
-    resolution: {integrity: sha512-LViQRUkmdWtsCntSDmmgMW5l8zAQrQaCHbW3iQy7JBeQ+RD8ZWEHKeK3FA1HCBMftnGufMVsfmi6OWggJCjVng==}
+  /envio@0.0.22:
+    resolution: {integrity: sha512-blnJbWZ4+CDKXZSrlDYXc5Eh/+DseucA5pphj7T2wYtDS44geldDOea3qjMQk5KSlgF4IrcfbAnP/fXXtT8t8w==}
     hasBin: true
     optionalDependencies:
-      envio-darwin-arm64: 0.0.21
-      envio-darwin-x64: 0.0.21
-      envio-linux-x64: 0.0.21
+      envio-darwin-arm64: 0.0.22
+      envio-darwin-x64: 0.0.22
+      envio-linux-x64: 0.0.22
     dev: false
 
   /escalade@3.1.1:
@@ -1259,7 +1261,7 @@ packages:
     resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
     dev: false
 
-  /ts-node@10.9.1(@types/node@18.18.3)(typescript@5.2.2):
+  /ts-node@10.9.1(@types/node@18.18.9)(typescript@5.2.2):
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
     hasBin: true
     peerDependencies:
@@ -1278,9 +1280,9 @@ packages:
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
-      '@types/node': 18.18.3
-      acorn: 8.10.0
-      acorn-walk: 8.2.0
+      '@types/node': 18.18.9
+      acorn: 8.11.2
+      acorn-walk: 8.3.0
       arg: 4.1.3
       create-require: 1.1.1
       diff: 4.0.2
@@ -1306,6 +1308,9 @@ packages:
     resolution: {integrity: sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==}
     engines: {node: '>=14.17'}
     hasBin: true
+
+  /undici-types@5.26.5:
+    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
 
   /unpipe@1.0.0:
     resolution: {integrity: sha512-pjy2bYhSsufwWlKwPc+l3cN7+wuJlK6uz0YdJEOlQDbl6jo/YlPi4mb8agUkVC8BF7V8NuzeyPNqRksA3hztKQ==}

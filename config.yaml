@@ -1,11 +1,25 @@
 name: liquidation-metrics # Name of the project
-description: Liquidation data for Compound-V2 # Description of the project
+description: Liquidation data for Compound-V2 forks # Description of the project
+
+contracts: 
+  - name: Ctoken
+    abi_file_path: ./abis/CToken.json
+    handler: ./src/EventHandlers.ts # Location of the file that handles the events emitted by this contract
+    events: # Configuration for each event emitted by this contract that the indexer will listen for
+      - event: "LiquidateBorrow" #  Name of the event (must match the name in the ABI)
+        requiredEntities: # An array of entities that need to loaded and made accessible within the handler function (an empty array indicates that no entities are required)
+          - name: "liquidatoraccount" # The name of the required entity (must match an entity defined in `schema.graphql`)
+          - name: "liquidatedaccount"
+          - name: "accountwin"
+          - name: "accountloss"
+          - name: "ctoken"
+          - name: "protocol"
+
 networks: # Configuration of the blockchain networks that the project is deployed on
   - id: 1 # Chain identifier of the network (ethereum mainnet)
     start_block: 7710660 # comptroller creation block
     contracts: # Configuration for each contract
-      - name: CtokenEthereum # User-defined contract name
-        abi_file_path: abis/CToken.json # File location of the contract ABI
+      - name: Ctoken #A reference to the global contract definition
         address: [
           # compound V2
           "0xe65cdB6479BaC1e22340E4E755fAE7E509EcD06c", 
@@ -77,21 +91,10 @@ networks: # Configuration of the blockchain networks that the project is deploye
           "0xC13FDF3aF7ec87dcA256d9C11Ff96405D360F522",
           "0x1EBfD36223079dC79FefC62260dB9E25f3F5e2C7",
         ] # An array of addresses that the contract is deployed to on the network
-        handler: src/EventHandlers.ts # Location of the file that handles the events emitted by this contract
-        events: # Configuration for each event emitted by this contract that the indexer will listen for
-          - event: LiquidateBorrow #  Name of the event (must match the name in the ABI)
-            requiredEntities: # An array of entities that need to loaded and made accessible within the handler function (an empty array indicates that no entities are required)
-              - name: liquidatoraccount # The name of the required entity (must match an entity defined in `schema.graphql`)
-              - name: liquidatedaccount
-              - name: accountwin
-              - name: accountloss
-              - name: ctoken
-              - name: protocol
   - id: 10 # Optimism
     start_block: 12658427 # creation block of iron bank comptroller  
     contracts: # Configuration for each contract
-      - name: CtokenOptimism # User-defined contract name
-        abi_file_path: abis/CToken.json # File location of the contract ABI
+      - name: Ctoken
         address: [
             # sonne finance
             "0xf7B5965f5C117Eb1B5450187c9DcFccc3C317e8E",
@@ -115,21 +118,10 @@ networks: # Configuration of the blockchain networks that the project is deploye
             "0xE724FfA5D30782499086682C8362CB3673bF69ae",
             "0x04F0fd3CD03B17a3E5921c0170ca6dD3952841cA",
         ] # An array of addresses that the contract is deployed to on the network
-        handler: src/EventHandlers.ts # Location of the file that handles the events emitted by this contract
-        events: # Configuration for each event emitted by this contract that the indexer will listen for
-          - event: LiquidateBorrow #  Name of the event (must match the name in the ABI)
-            requiredEntities: # An array of entities that need to loaded and made accessible within the handler function (an empty array indicates that no entities are required)
-              - name: liquidatoraccount # The name of the required entity (must match an entity defined in `schema.graphql`)
-              - name: liquidatedaccount
-              - name: accountwin
-              - name: accountloss
-              - name: ctoken
-              - name: protocol
   - id: 43114 # Avalanche
     start_block: 3040000 # around the comptroller creation block for Benqi Lending
     contracts: # Configuration for each contract
-      - name: CtokenAvalanche # User-defined contract name
-        abi_file_path: abis/CToken.json # File location of the contract ABI
+      - name: Ctoken
         address: [
             # Benqi lending
             "0x5C0401e81Bc07Ca70fAD469b451682c0d747Ef1c",
@@ -158,61 +150,40 @@ networks: # Configuration of the blockchain networks that the project is deploye
             "0x02C9133627a14214879175a7A222d0a7f7404eFb",
             "0x3Af7c11d112C1C730E5ceE339Ca5B48F9309aCbC",
         ] # An array of addresses that the contract is deployed to on the network
-        handler: src/EventHandlers.ts # Location of the file that handles the events emitted by this contract
-        events: # Configuration for each event emitted by this contract that the indexer will listen for
-          - event: LiquidateBorrow #  Name of the event (must match the name in the ABI)
-            requiredEntities: # An array of entities that need to loaded and made accessible within the handler function (an empty array indicates that no entities are required)
-              - name: liquidatoraccount # The name of the required entity (must match an entity defined in `schema.graphql`)
-              - name: liquidatedaccount
-              - name: accountwin
-              - name: accountloss
-              - name: ctoken
-              - name: protocol
-#  - id: 56 # BNB
-#    start_block: 2471510 # creation block of Venus comptroller 
-#    contracts: # Configuration for each contract
-#      - name: CtokenBinance # User-defined contract name
-#        abi_file_path: abis/CToken.json # File location of the contract ABI
-#        address:  [
-#            # Venus
-#            "0x26DA28954763B92139ED49283625ceCAf52C6f94",
-#            "0x9A0AF7FDb2065Ce470D72664DE73cAE409dA28Ec",
-#            "0x5F0388EBc2B94FA8E123F404b79cCF5f40b29176",
-#            "0x972207A639CC1B374B893cc33Fa251b55CEB7c07",
-#            "0xA07c5b74C9B40447a954e1466938b865b6BBea36",
-#            "0x882C173bC7Ff3b7786CA16dfeD3DFFfb9Ee7847B",
-#            "0x95c78222B3D6e262426483D42CfA53685A67Ab9D",
-#            "0x86aC3974e2BD0d60825230fa6F355fF11409df5c",
-#            "0xeBD0070237a0713E8D94fEf1B728d3d993d290ef",
-#            "0x334b3eCB4DCa3593BCCC3c7EBD1A1C1d1780FBF1",
-#            "0xec3422Ef92B2fb59e84c8B02Ba73F1fE84Ed8D71",
-#            "0x1610bc33319e9398de5f57B33a5b184c806aD217",
-#            "0xf508fCD89b8bd15579dc79A6827cB4686A3592c8",
-#            "0xf91d58b5aE142DAcC749f58A49FCBac340Cb0343",
-#            "0x650b940a1033B8A1b1873f78730FcFC73ec11f1f",
-#            "0x57A5297F2cB2c0AaC9D554660acd6D385Ab50c6B",
-#            "0xb91A659E88B51474767CD97EF3196A3e7cEDD2c8",
-#            "0x5c9476FcD6a4F9a3654139721c949c2233bBbBc8",
-#            "0x2fF3d0F6990a40261c66E1ff2017aCBc282EB6d0",
-#            "0x2fF3d0F6990a40261c66E1ff2017aCBc282EB6d0",
-#            "0xC5D3466aA484B040eE977073fcF337f2c00071c1",
-#            "0x61eDcFe8Dd6bA3c891CB9bEc2dc7657B3B422E93",
-#            "0xBf762cd5991cA1DCdDaC9ae5C638F5B5Dc3Bee6E",
-#            "0x08CEB3F4a7ed3500cA0982bcd0FC7816688084c3",
-#            "0xecA88125a5ADbe82614ffC12D0DB554E2e2867C8",
-#            "0xfD5840Cd36d94D7229439859C0112a4185BC0255",
-#            "0x78366446547D062f45b4C0f320cDaa6d710D87bb",
-#            "0x6CFdEc747f37DAf3b87a35a1D9c8AD3063A1A8A0",
-#            "0xB248a295732e0225acd3337607cc01068e3b9c10",
-#            "0x151B1e2635A717bcDc836ECd6FbB62B674FE3E1D",
-#        ] # An array of addresses that the contract is deployed to on the network
-#        handler: src/EventHandlers.ts # Location of the file that handles the events emitted by this contract
-#        events: # Configuration for each event emitted by this contract that the indexer will listen for
-#          - event: LiquidateBorrow #  Name of the event (must match the name in the ABI)
-#            requiredEntities: # An array of entities that need to loaded and made accessible within the handler function (an empty array indicates that no entities are required)
-#              - name: liquidatoraccount # The name of the required entity (must match an entity defined in `schema.graphql`)
-#              - name: liquidatedaccount
-#              - name: accountwin
-#              - name: accountloss
-#              - name: ctoken
-#              - name: protocol
+  - id: 56 # BNB
+    start_block: 2471510 # creation block of Venus comptroller 
+    contracts: # Configuration for each contract
+      - name: Ctoken
+        address:  [
+            # Venus
+            "0x26DA28954763B92139ED49283625ceCAf52C6f94",
+            "0x9A0AF7FDb2065Ce470D72664DE73cAE409dA28Ec",
+            "0x5F0388EBc2B94FA8E123F404b79cCF5f40b29176",
+            "0x972207A639CC1B374B893cc33Fa251b55CEB7c07",
+            "0xA07c5b74C9B40447a954e1466938b865b6BBea36",
+            "0x882C173bC7Ff3b7786CA16dfeD3DFFfb9Ee7847B",
+            "0x95c78222B3D6e262426483D42CfA53685A67Ab9D",
+            "0x86aC3974e2BD0d60825230fa6F355fF11409df5c",
+            "0xeBD0070237a0713E8D94fEf1B728d3d993d290ef",
+            "0x334b3eCB4DCa3593BCCC3c7EBD1A1C1d1780FBF1",
+            "0xec3422Ef92B2fb59e84c8B02Ba73F1fE84Ed8D71",
+            "0x1610bc33319e9398de5f57B33a5b184c806aD217",
+            "0xf508fCD89b8bd15579dc79A6827cB4686A3592c8",
+            "0xf91d58b5aE142DAcC749f58A49FCBac340Cb0343",
+            "0x650b940a1033B8A1b1873f78730FcFC73ec11f1f",
+            "0x57A5297F2cB2c0AaC9D554660acd6D385Ab50c6B",
+            "0xb91A659E88B51474767CD97EF3196A3e7cEDD2c8",
+            "0x5c9476FcD6a4F9a3654139721c949c2233bBbBc8",
+            "0x2fF3d0F6990a40261c66E1ff2017aCBc282EB6d0",
+            "0x2fF3d0F6990a40261c66E1ff2017aCBc282EB6d0",
+            "0xC5D3466aA484B040eE977073fcF337f2c00071c1",
+            "0x61eDcFe8Dd6bA3c891CB9bEc2dc7657B3B422E93",
+            "0xBf762cd5991cA1DCdDaC9ae5C638F5B5Dc3Bee6E",
+            "0x08CEB3F4a7ed3500cA0982bcd0FC7816688084c3",
+            "0xecA88125a5ADbe82614ffC12D0DB554E2e2867C8",
+            "0xfD5840Cd36d94D7229439859C0112a4185BC0255",
+            "0x78366446547D062f45b4C0f320cDaa6d710D87bb",
+            "0x6CFdEc747f37DAf3b87a35a1D9c8AD3063A1A8A0",
+            "0xB248a295732e0225acd3337607cc01068e3b9c10",
+            "0x151B1e2635A717bcDc836ECd6FbB62B674FE3E1D",
+        ] # An array of addresses that the contract is deployed to on the network
