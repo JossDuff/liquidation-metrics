@@ -14,59 +14,13 @@ import {
 } from "./Utils"
 
 import {
-  CtokenEthereumContract_LiquidateBorrow_loader,
-  CtokenEthereumContract_LiquidateBorrow_handler,
-  CtokenOptimismContract_LiquidateBorrow_loader,
-  CtokenOptimismContract_LiquidateBorrow_handler,
-  CtokenAvalancheContract_LiquidateBorrow_loader,
-  CtokenAvalancheContract_LiquidateBorrow_handler,
-  CtokenBinanceContract_LiquidateBorrow_loader,
-  CtokenBinanceContract_LiquidateBorrow_handler,
+  CtokenContract_LiquidateBorrow_loader,
+  CtokenContract_LiquidateBorrow_handler,
 } from "../generated/src/Handlers.gen";
 
-import {
-  eventLog,
-  CtokenEthereumContract_LiquidateBorrowEvent_eventArgs,
-  CtokenOptimismContract_LiquidateBorrowEvent_eventArgs,
-  CtokenAvalancheContract_LiquidateBorrowEvent_eventArgs,
-  CtokenBinanceContract_LiquidateBorrowEvent_eventArgs,
-  CtokenEthereumContract_LiquidateBorrowEvent_loaderContext,
-  CtokenOptimismContract_LiquidateBorrowEvent_loaderContext,
-  CtokenAvalancheContract_LiquidateBorrowEvent_loaderContext,
-  CtokenBinanceContract_LiquidateBorrowEvent_loaderContext,
-  CtokenEthereumContract_LiquidateBorrowEvent_context,
-  CtokenOptimismContract_LiquidateBorrowEvent_context,
-  CtokenAvalancheContract_LiquidateBorrowEvent_context,
-  CtokenBinanceContract_LiquidateBorrowEvent_context
-} from "../generated/src/Types.gen";
 
 
-CtokenEthereumContract_LiquidateBorrow_loader(({ event, context }) => {
-  chainAgnostic_LiquidateBorrow_Loader(event, context);
-});
-CtokenOptimismContract_LiquidateBorrow_loader(({ event, context }) => {
-  chainAgnostic_LiquidateBorrow_Loader(event, context);
-});
-CtokenAvalancheContract_LiquidateBorrow_loader(({ event, context }) => {
-  chainAgnostic_LiquidateBorrow_Loader(event, context);
-});
-CtokenBinanceContract_LiquidateBorrow_loader(({ event, context }) => {
-  chainAgnostic_LiquidateBorrow_Loader(event, context);
-});
-
-function chainAgnostic_LiquidateBorrow_Loader(
-  event:
-    eventLog<CtokenEthereumContract_LiquidateBorrowEvent_eventArgs> |
-    eventLog<CtokenOptimismContract_LiquidateBorrowEvent_eventArgs> |
-    eventLog<CtokenAvalancheContract_LiquidateBorrowEvent_eventArgs> |
-    eventLog<CtokenBinanceContract_LiquidateBorrowEvent_eventArgs>,
-  context:
-    CtokenEthereumContract_LiquidateBorrowEvent_loaderContext |
-    CtokenOptimismContract_LiquidateBorrowEvent_loaderContext |
-    CtokenAvalancheContract_LiquidateBorrowEvent_loaderContext |
-    CtokenBinanceContract_LiquidateBorrowEvent_loaderContext
-) {
-
+CtokenContract_LiquidateBorrow_loader(({ event, context }) => {
   const liquidatorAddress: string = event.params.liquidator.toString();
   context.liquidatoraccount.load(liquidatorAddress);
 
@@ -102,33 +56,10 @@ function chainAgnostic_LiquidateBorrow_Loader(
       loadLiquidatedAccountLost: true
     },
   });
-}
 
-CtokenEthereumContract_LiquidateBorrow_handler(({ event, context }) => {
-  chainAgnostic_LiquidateBorrow_Handler(event, context);
-});
-CtokenOptimismContract_LiquidateBorrow_handler(({ event, context }) => {
-  chainAgnostic_LiquidateBorrow_Handler(event, context);
-});
-CtokenAvalancheContract_LiquidateBorrow_handler(({ event, context }) => {
-  chainAgnostic_LiquidateBorrow_Handler(event, context);
-});
-CtokenBinanceContract_LiquidateBorrow_handler(({ event, context }) => {
-  chainAgnostic_LiquidateBorrow_Handler(event, context);
 });
 
-function chainAgnostic_LiquidateBorrow_Handler(
-  event:
-    eventLog<CtokenEthereumContract_LiquidateBorrowEvent_eventArgs> |
-    eventLog<CtokenOptimismContract_LiquidateBorrowEvent_eventArgs> |
-    eventLog<CtokenAvalancheContract_LiquidateBorrowEvent_eventArgs> |
-    eventLog<CtokenBinanceContract_LiquidateBorrowEvent_eventArgs>,
-  context:
-    CtokenEthereumContract_LiquidateBorrowEvent_context |
-    CtokenOptimismContract_LiquidateBorrowEvent_context |
-    CtokenAvalancheContract_LiquidateBorrowEvent_context |
-    CtokenBinanceContract_LiquidateBorrowEvent_context
-) {
+CtokenContract_LiquidateBorrow_handler(({ event, context }) => {
   const seizeAmount = event.params.seizeTokens;
   const repayAmount = event.params.repayAmount;
 
@@ -174,6 +105,8 @@ function chainAgnostic_LiquidateBorrow_Handler(
   const accountLoss = context.accountloss.get(accountLossID);
   const updatedAccountLoss = updateCreateAccountLoss(accountLoss, accountLossID, seizeAmount, ctokenSeizedAddress, liquidatedAccountAddress);
   context.accountloss.set(updatedAccountLoss);
-}
+
+});
+
 
 

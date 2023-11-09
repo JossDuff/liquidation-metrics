@@ -9,12 +9,12 @@
     "start": "ts-node generated/src/Index.bs.js"
   },
   "devDependencies": {
-    "@types/node": "^18.18.3",
+    "@types/node": "^18.18.9",
     "rescript": "^10.1.4",
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "envio": "0.0.21",
+    "envio": "0.0.22",
     "ts-node": "^10.9.1"
   }
 }
