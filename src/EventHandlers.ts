@@ -6,27 +6,34 @@
 import {
   ComptrollerContract,
   CtokenContract,
-  CtokenStatusEntity,
+  CtokenEntity,
   LiquidationEntity
 } from "generated";
 
 CtokenContract.LiquidateBorrow.loader(({event, context}) => {
-  context.CtokenStatus.load(event.srcAddress);
+  context.Ctoken.load(event.srcAddress);
 });
 
 CtokenContract.LiquidateBorrow.handler(({event, context}) => {
-  let ctokenStatus = context.CtokenStatus.get(event.srcAddress);
-  if (!ctokenStatus?.isListed) {
-    return;
-  }
+  let ctoken = context.Ctoken.get(event.srcAddress);
+  // if (!ctoken?.isListed) {
+  //   return;
+  // }
 
-  const id = parseInt(event.blockNumber.toString() + event.transactionIndex.toString());
+  if (!ctoken) {
+    throw new Error("ctoken " + event.srcAddress + " not found");
+  }
+  const comptrollerAddress = ctoken?.comptroller;
+  
+
+  const id = event.blockNumber.toString() + event.transactionIndex.toString() + event.chainId.toString();
 
   const newLiquidationEntity: LiquidationEntity = {
-    id: id.toString(),
+    id: id,
     chainID: event.chainId,
     blockNumber: event.blockNumber,
     sourceAddress: event.srcAddress,
+    comptrollerAddress: comptrollerAddress,
     liquidatorAddress: event.params.liquidator,
     borrowerAddress: event.params.borrower,
     repayAmount: event.params.repayAmount,
@@ -41,27 +48,30 @@ ComptrollerContract.MarketDelisted.loader(({ event, context }) => {
 });
 
 ComptrollerContract.MarketDelisted.handler(({ event, context }) => {
-  const ctokenAddr = event.params.cToken;
-  const ctokenEntity: CtokenStatusEntity = {
-    id: ctokenAddr,
+  const id = event.params.cToken + event.chainId;
+  const ctokenEntity: CtokenEntity = {
+    id: id,
+    address: event.params.cToken,
+    comptroller: event.srcAddress,
     isListed: false
   }
 
-  context.CtokenStatus.set(ctokenEntity)
+  context.Ctoken.set(ctokenEntity)
 });
 
 ComptrollerContract.MarketListed.loader(({ event, context }) => {
-  // context.EventsSummary.load(GLOBAL_EVENTS_SUMMARY_KEY);
   const ctokenAddr = event.params.cToken;
   context.contractRegistration.addCtoken(ctokenAddr);
 });
 
 ComptrollerContract.MarketListed.handler(({ event, context }) => {
   const ctokenAddr = event.params.cToken;
-  const ctokenEntity: CtokenStatusEntity = {
+  const ctokenEntity: CtokenEntity = {
     id: ctokenAddr,
+    address: event.params.cToken,
+    comptroller: event.srcAddress,
     isListed: true
   }
 
-  context.CtokenStatus.set(ctokenEntity)
+  context.Ctoken.set(ctokenEntity)
 });

@@ -1,21 +1,24 @@
-type CtokenStatus {
+type Ctoken {
+  # concat of ctoken address and chain id
   id: ID!
+  address: String!
+  comptroller: String!
   isListed: Boolean!
 }
 
 type Liquidation {
-  # id is tinyid
-  id: ID!,
+  # concat of block number, txn index, and chain id
+  id: ID!
   # context
-  chainID: Int!,
-  blockNumber: Int!,
+  chainID: Int!
+  blockNumber: Int!
   # emitting ctoken address
-  sourceAddress: String!,
-  # comptrollerAddress: String!,
+  sourceAddress: String!
+  comptrollerAddress: String!
   # params
-  liquidatorAddress: String!,
-  borrowerAddress: String!,
-  repayAmount: BigInt!,
-  cTokenCollateralAddress: String!,
+  liquidatorAddress: String!
+  borrowerAddress: String!
+  repayAmount: BigInt!
+  cTokenCollateralAddress: String!
   seizeTokens: BigInt!
 }
