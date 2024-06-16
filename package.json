@@ -1,20 +1,31 @@
 {
-  "name": "liquidation-metrics",
+  "name": "liquidation metrics",
   "version": "0.1.0",
   "scripts": {
     "clean": "tsc --clean",
     "build": "tsc --build",
     "watch": "tsc --watch",
+    "mocha": "ts-mocha test/**/*.ts",
     "codegen": "envio codegen",
+    "dev": "envio dev",
+    "test": "pnpm mocha",
     "start": "ts-node generated/src/Index.bs.js"
   },
   "devDependencies": {
-    "@types/node": "^18.18.9",
-    "rescript": "^10.1.4",
-    "typescript": "^5.2.2"
+    "@types/chai": "^4.3.11",
+    "@types/mocha": "10.0.6",
+    "@types/node": "20.8.8",
+    "mocha": "10.2.0",
+    "ts-mocha": "^10.0.0",
+    "ts-node": "10.9.1",
+    "typescript": "5.2.2"
   },
   "dependencies": {
-    "envio": "0.0.22",
-    "ts-node": "^10.9.1"
+    "chai": "4.3.10",
+    "envio": "1.2.0",
+    "ethers": "6.8.0"
+  },
+  "optionalDependencies": {
+    "generated": "./generated"
   }
 }
