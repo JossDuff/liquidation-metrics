@@ -2,7 +2,7 @@
  *Please refer to https://docs.envio.dev for a thorough guide on all Envio indexer features*
  */
 // import { v4 as uuidv4 } from "uuid";
- 
+
 import {
   ComptrollerContract,
   CtokenContract,
@@ -10,11 +10,11 @@ import {
   LiquidationEntity
 } from "generated";
 
-CtokenContract.LiquidateBorrow.loader(({event, context}) => {
+CtokenContract.LiquidateBorrow.loader(({ event, context }) => {
   context.Ctoken.load(event.srcAddress);
 });
 
-CtokenContract.LiquidateBorrow.handler(({event, context}) => {
+CtokenContract.LiquidateBorrow.handler(({ event, context }) => {
   let ctoken = context.Ctoken.get(event.srcAddress);
   // if (!ctoken?.isListed) {
   //   return;
@@ -23,8 +23,8 @@ CtokenContract.LiquidateBorrow.handler(({event, context}) => {
   if (!ctoken) {
     throw new Error("ctoken " + event.srcAddress + " not found");
   }
-  const comptrollerAddress = ctoken?.comptroller;
-  
+  const comptrollerAddress = ctoken?.comptroller.toLowerCase();
+
 
   const id = event.blockNumber.toString() + event.transactionIndex.toString() + event.chainId.toString();
 
@@ -52,7 +52,7 @@ ComptrollerContract.MarketDelisted.handler(({ event, context }) => {
   const ctokenEntity: CtokenEntity = {
     id: id,
     address: event.params.cToken,
-    comptroller: event.srcAddress,
+    comptroller: event.srcAddress.toLowerCase(),
     isListed: false
   }
 
@@ -69,7 +69,7 @@ ComptrollerContract.MarketListed.handler(({ event, context }) => {
   const ctokenEntity: CtokenEntity = {
     id: ctokenAddr,
     address: event.params.cToken,
-    comptroller: event.srcAddress,
+    comptroller: event.srcAddress.toLowerCase(),
     isListed: true
   }
 
