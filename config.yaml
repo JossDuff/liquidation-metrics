@@ -6,7 +6,8 @@ networks:
   contracts:
   - name: Comptroller
     address:
-    - 0xE0B57FEEd45e7D908f2d0DaCd26F113Cf26715BF
+    - 0xE0B57FEEd45e7D908f2d0DaCd26F113Cf26715BF # iron bank
+    - 0x60CF091cD3f50420d50fD7f707414d0DF4751C58 # sonne finance
     handler: src/EventHandlers.ts
     events:
     - event: MarketDelisted(address cToken, bool force)
